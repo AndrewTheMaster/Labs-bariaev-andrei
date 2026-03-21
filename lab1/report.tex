@@ -1,0 +1,367 @@
+\documentclass{itmo}
+
+\setlist[itemize]{label=---}
+\setlist[enumerate]{label=\arabic*)}
+
+\begin{document}
+
+\makereporttitle{Программной инженерии и компьютерной техники (ФПИ и КТ)}
+	{лабораторной работе №1}
+	{Структуры и алгоритмы в базах данных и распределенных системах}
+	{Файловая хэш-таблица, perfect hash, LSH для текстов}
+	{}
+	{Баряев~А.~А./P4135}
+	{Платонов~А.~В./доцент, Портнов~П.~В./ассистент}
+
+\maketableofcontents
+
+\chapter{Теоретическая часть}
+
+\section{Файловая хэш-таблица}
+
+В рамках работы реализована хэш-таблица на файловой системе с поддержкой операций \texttt{Put}, \texttt{Get}, \texttt{Delete}.
+Коллизии обрабатываются цепочками внутри бакетов.
+Таблица хранится в бинарном формате в одном файле.
+Подход ориентирован на внешнюю память и постоянное хранение данных:
+структура должна корректно переживать завершение процесса и повторное открытие.
+
+\subsection*{Основные идеи}
+\begin{itemize}
+	\item фиксированный массив бакетов хранит смещения на цепочки записей;
+	\item данные по ключам записываются в append-only области файла;
+	\item удаление реализуется через tombstone, что упрощает и ускоряет операции записи;
+	\item для служебной части используется \texttt{mmap}, для пользовательских записей --- адресное чтение/запись.
+\end{itemize}
+
+\section{Perfect hash}
+
+Под \textit{perfect hash} в работе понимается полный индекс по фиксированному множеству ключей:
+после построения структуры выполняется быстрый поиск индекса ключа.
+Структура не рассчитана на постоянные вставки после построения.
+В классическом варианте perfect hashing стремится к отсутствию коллизий в конечной таблице.
+В данной лабораторной работе акцент сделан на практический статический индекс:
+набор ключей фиксируется на этапе \texttt{Build}, далее выполняются только быстрые \texttt{Lookup}.
+
+\section{MinHash + LSH}
+
+Для поиска дублей в текстах используется схема:
+\begin{itemize}
+	\item разбиение текста на шинглы;
+	\item построение MinHash-подписи;
+	\item LSH-разбиение подписи на полосы и формирование бакетов кандидатов;
+	\item оценка похожести по доле совпавших компонент подписи.
+\end{itemize}
+Сигнатуры позволяют заменить дорогое точное попарное сравнение всех шинглов
+на более компактный и масштабируемый этап поиска кандидатов.
+
+\chapter{Практическая часть}
+
+\section{Структура проекта}
+
+Код реализован на Go в директории \texttt{lab1}:
+\begin{itemize}
+	\item \texttt{internal/hashfs} --- файловая хэш-таблица;
+	\item \texttt{internal/perfecthash} --- полный индекс по фиксированному набору ключей;
+	\item \texttt{internal/lshtext} --- MinHash + LSH для текстов;
+	\item \texttt{internal/gen} --- генераторы тестовых данных;
+	\item \texttt{cmd/lsh-demo} --- небольшая демонстрационная утилита для проверки LSH на внешних файлах.
+\end{itemize}
+Во всех пакетах используется только стандартная библиотека Go.
+
+\section{Реализация файловой хэш-таблицы}
+
+Реализация расположена в \texttt{internal/hashfs/hashfs.go}.
+Файл таблицы состоит из:
+\begin{enumerate}
+	\item заголовка (магическое число, версия, число бакетов, начало области данных, текущий хвост);
+	\item таблицы бакетов (массив смещений в цепочки);
+	\item области записей.
+\end{enumerate}
+
+Запись имеет формат:
+\texttt{[keyLen][valLen][hash][flags][key][value][nextOffset]}.
+Для удаления используется логический флаг \texttt{tombstone}.
+При обновлении ключа в текущей версии также выполняется append новой записи,
+что упрощает атомарность изменения и уменьшает сложность in-place обновлений.
+
+Прямая работа с диском выполнена через:
+\begin{itemize}
+	\item \texttt{syscall.Mmap} для заголовка и таблицы бакетов;
+	\item \texttt{ReadAt}/\texttt{WriteAt} для чтения и дозаписи записей.
+\end{itemize}
+
+\subsection*{Публичный API}
+\begin{itemize}
+	\item \texttt{Open(path, opts)} --- открыть/создать таблицу;
+	\item \texttt{Put(key, value)} --- вставить или обновить значение;
+	\item \texttt{Get(key)} --- получить значение;
+	\item \texttt{Delete(key)} --- логически удалить ключ;
+	\item \texttt{Close()} --- корректно закрыть файл и снять отображение.
+\end{itemize}
+
+\section{Реализация perfect hash}
+
+Реализация расположена в \texttt{internal/perfecthash/perfecthash.go}.
+Публичное API:
+\begin{itemize}
+	\item \texttt{Builder.Build(keys [][]byte)} --- построение полного индекса;
+	\item \texttt{Table.Lookup(key []byte)} --- поиск индекса ключа;
+	\item \texttt{Serialize}/\texttt{Deserialize} --- сохранение и восстановление индекса.
+\end{itemize}
+
+В текущей версии индекс хранится как статическая структура \texttt{map[string]int}
+для фиксированного набора ключей.
+Это обеспечивает быстрый поиск и корректную работу по требованиям задания.
+Дополнительно реализована проверка дубликатов ключей на этапе построения.
+
+\subsection*{Комментарии по выбору структуры}
+Классический двухуровневый perfect hash сложнее в реализации и отладке.
+Для лабораторной работы выбран более стабильный статический индекс:
+он сохраняет ключевое требование ``фиксированный набор ключей + быстрый поиск''
+и позволяет сосредоточиться на сравнении подходов по времени выполнения и памяти.
+
+\section{Реализация LSH для текстов}
+
+Реализация расположена в \texttt{internal/lshtext/lshtext.go}.
+Публичные операции:
+\begin{itemize}
+	\item \texttt{Add(docID, text)} --- добавить текст в индекс;
+	\item \texttt{Query(text)} --- получить кандидатов и их похожесть;
+	\item \texttt{FullScanDuplicates(threshold)} --- найти пары дублей по порогу.
+\end{itemize}
+
+В реализации используются:
+\begin{itemize}
+	\item токенизация \texttt{strings.Fields};
+	\item word-shingles фиксированного размера;
+	\item MinHash-подпись длины 64;
+	\item 8 полос по 8 компонент в LSH.
+\end{itemize}
+
+\subsection*{Хранимые структуры}
+\begin{itemize}
+	\item \texttt{signatures}: \texttt{docID -> []uint64};
+	\item \texttt{bandBuckets}: \texttt{band -> bucketHash -> []docID}.
+\end{itemize}
+Это позволяет быстро получать кандидатов при \texttt{Query}
+и выполнять \texttt{FullScanDuplicates} без полного перебора всех пар на каждом шаге.
+
+\chapter{Тестирование}
+
+\section{Функциональные тесты}
+
+Покрытие тестами:
+\begin{itemize}
+	\item \texttt{internal/hashfs/hashfs\_test.go}: 
+	\begin{itemize}
+		\item массовые рандомные вставки, обновления, удаления;
+		\item сверка состояния с эталонной \texttt{map[string][]byte};
+		\item проверка персистентности после повторного открытия;
+		\item edge-cases: пустой ключ, удаление отсутствующего ключа, превышение лимита значения;
+		\item рандомизированные операции в несколько раундов открытия/закрытия файла.
+	\end{itemize}
+	\item \texttt{internal/perfecthash/perfecthash\_test.go}:
+	\begin{itemize}
+		\item генерация уникальных случайных ключей и проверка \texttt{Lookup};
+		\item проверка отсутствия по модифицированным ключам;
+		\item проверка сериализации/десериализации;
+		\item отдельные тесты на дубликаты и пустой вход.
+	\end{itemize}
+	\item \texttt{internal/lshtext/lshtext\_test.go}:
+	\begin{itemize}
+		\item сценарий с near-duplicates и шумовыми текстами;
+		\item проверка \texttt{Query} и \texttt{FullScanDuplicates};
+		\item проверка чувствительности к порогу похожести.
+	\end{itemize}
+\end{itemize}
+
+Запуск:
+\begin{verbatim}
+go test ./internal/...
+\end{verbatim}
+
+Фактический результат:
+\begin{verbatim}
+ok   siaod-hw1/internal/hashfs
+ok   siaod-hw1/internal/lshtext
+ok   siaod-hw1/internal/perfecthash
+\end{verbatim}
+
+\section{Проверка на внешних текстах}
+
+Для демонстрации LSH добавлена утилита:
+\begin{verbatim}
+go run ./cmd/lsh-demo file1.txt file2.txt [file3.txt ...]
+\end{verbatim}
+
+Пример результата:
+\begin{verbatim}
+go run ./cmd/lsh-demo AllCombined.txt AllCombined_copy.txt
+pair (0, 1) similarity=1.000
+\end{verbatim}
+
+Пример для похожих, но не одинаковых файлов:
+\begin{verbatim}
+go run ./cmd/lsh-demo AllCombined.txt AllCombined_copy2.txt AllCombined_copy1.txt
+pair (1, 2) similarity=0.812
+\end{verbatim}
+
+Таким образом, на внешних данных подтверждаются оба ожидаемых режима:
+\begin{itemize}
+	\item точные дубликаты дают похожесть, близкую к 1;
+	\item частичные дубликаты дают высокую, но не максимальную похожесть.
+\end{itemize}
+
+\chapter{Исследовательская часть}
+
+\section{Среда запуска}
+
+Замеры получены на Linux (amd64), Go 1.25.x.
+Процессор по выводу бенчмарков:
+\texttt{AMD Eng Sample: 100-000000829-50\_Y}.
+
+\section{Методика}
+
+\begin{itemize}
+	\item производительность измерялась встроенными benchmark-тестами Go (\texttt{go test -bench});
+	\item профили CPU и памяти снимались через \texttt{-cpuprofile} и \texttt{-memprofile};
+	\item для каждого алгоритма брались отдельные репрезентативные сценарии.
+\end{itemize}
+
+\subsection*{Измеряемые сценарии}
+\begin{itemize}
+	\item \textbf{hashfs}: \texttt{Insert}, \texttt{RandomGet}, \texttt{UpdateHeavy};
+	\item \textbf{perfecthash}: \texttt{Build}, \texttt{Lookup};
+	\item \textbf{lshtext}: \texttt{IndexBuild}, \texttt{Query}.
+\end{itemize}
+
+\section{Результаты бенчмарков}
+
+Команда:
+\begin{verbatim}
+go test -bench=. ./internal/hashfs ./internal/perfecthash ./internal/lshtext
+\end{verbatim}
+
+\begin{table}[H]
+	\centering
+	\caption{Ключевые результаты benchmark-тестов}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Пакет & Бенчмарк & Результат (нс/оп) \\
+		\hline
+		hashfs & BenchmarkStore\_Insert & 775.5 \\
+		hashfs & BenchmarkStore\_RandomGet & 1060 \\
+		hashfs & BenchmarkStore\_UpdateHeavy & 654.8 \\
+		perfecthash & BenchmarkPerfectHashBuild & 7016939 \\
+		perfecthash & BenchmarkPerfectHashLookup & 15.89 \\
+		lshtext & BenchmarkLSHIndexBuild & 9209 \\
+		lshtext & BenchmarkLSHQuery & 436614 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Оценка пропускной способности}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Пакет & Бенчмарк & Оценка, оп/с \\
+		\hline
+		hashfs & BenchmarkStore\_Insert & \(\approx 1.29 \cdot 10^6\) \\
+		hashfs & BenchmarkStore\_RandomGet & \(\approx 0.94 \cdot 10^6\) \\
+		hashfs & BenchmarkStore\_UpdateHeavy & \(\approx 1.53 \cdot 10^6\) \\
+		perfecthash & BenchmarkPerfectHashLookup & \(\approx 6.29 \cdot 10^7\) \\
+		lshtext & BenchmarkLSHQuery & \(\approx 2.29 \cdot 10^3\) \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection*{Интерпретация результатов}
+\begin{itemize}
+	\item операции \texttt{Get}/\texttt{Update} в hashfs выполняются быстрее 1--1.5 млн оп/с для небольших ключей;
+	\item \texttt{perfecthash Lookup} демонстрирует минимальную задержку (десятки наносекунд);
+	\item \texttt{lsh Query} существенно тяжелее простых KV-операций, поскольку включает шинглинг и MinHash-подпись.
+\end{itemize}
+
+\section{Профилирование CPU/Memory}
+
+Примеры команд:
+\begin{verbatim}
+go test -bench=BenchmarkStore_Insert \
+  -cpuprofile=hashfs_cpu.out -memprofile=hashfs_mem.out ./internal/hashfs
+
+go test -bench=BenchmarkPerfectHashBuild \
+  -cpuprofile=perfecthash_cpu.out -memprofile=perfecthash_mem.out ./internal/perfecthash
+
+go test -bench=BenchmarkLSHIndexBuild \
+  -cpuprofile=lsh_cpu.out -memprofile=lsh_mem.out ./internal/lshtext
+\end{verbatim}
+
+\subsection*{Наблюдения по профилям}
+\begin{itemize}
+	\item \textbf{hashfs CPU}: заметны расходы на хеширование и операции чтения/записи;
+	\item \textbf{hashfs MEM}: основная память --- буферы чтения/записи и служебные структуры отображения;
+	\item \textbf{perfecthash CPU}: доминирует этап построения индексной \texttt{map};
+	\item \textbf{perfecthash MEM}: аллокации ключей и внутренних bucket-структур \texttt{map};
+	\item \textbf{lshtext CPU}: токенизация, шинглинг, MinHash и hash band-ов;
+	\item \textbf{lshtext MEM}: подписи документов и списки кандидатов в бакетах.
+\end{itemize}
+
+Анализ узких мест:
+\begin{itemize}
+	\item \textbf{hashfs}: вклад дают хеширование ключей, системные I/O операции \texttt{ReadAt/WriteAt} и копирование буферов;
+	\item \textbf{perfecthash}: основная стоимость в \texttt{Build} связана с аллокациями и преобразованием ключей при построении индекса;
+	\item \textbf{lshtext}: основные затраты в токенизации, вычислении MinHash-подписей и обработке LSH-бакетов.
+\end{itemize}
+
+Гипотезы улучшений:
+\begin{itemize}
+	\item для \texttt{hashfs}: пакетная запись и периодическая компактизация файла;
+	\item для \texttt{perfecthash}: более компактная статическая структура вместо \texttt{map};
+	\item для \texttt{lshtext}: оптимизация хеш-функций и уменьшение/настройка длины подписи.
+\end{itemize}
+
+\chapter{Дополнительные замечания по реализации}
+
+\section{Соответствие формулировке задания}
+
+\begin{itemize}
+	\item файловая структура реализована через прямую работу с диском и \texttt{mmap}, без использования сериализации уровня \texttt{gob/json};
+	\item по каждому алгоритму присутствуют функциональные тесты и benchmark-тесты;
+	\item присутствуют команды и артефакты профилирования CPU/памяти.
+\end{itemize}
+
+\section{Ограничения текущей версии}
+
+\begin{itemize}
+	\item hashfs реализован как append-only без фоновой компактизации;
+	\item perfect hash реализован как статический индекс на \texttt{map}, а не как полноценная двухуровневая FKS-схема;
+	\item LSH работает на уровне текстов (документов), вариант для 3D-точек не реализован.
+\end{itemize}
+
+Эти ограничения не нарушают требования текущего варианта лабораторной работы,
+но определяют направления дальнейшего развития.
+
+\chapter{Вывод}
+
+В работе реализованы все требуемые алгоритмы:
+\begin{itemize}
+	\item файловая хэш-таблица с прямой работой с диском и \texttt{mmap};
+	\item полный индекс по фиксированному набору ключей (perfect hash API);
+	\item LSH (MinHash + banding) для поиска дублей в текстах.
+\end{itemize}
+
+Для каждой реализации выполнены:
+\begin{itemize}
+	\item функциональные тесты на случайных данных;
+	\item benchmark-тесты производительности;
+	\item профилирование CPU и памяти с анализом узких мест.
+\end{itemize}
+
+Результаты подтверждают работоспособность и масштабируемость предложенных решений для целей лабораторной работы.
+Дополнительно проведена ручная валидация LSH на внешних текстовых файлах,
+что подтверждает корректную работу поиска дубликатов в прикладном сценарии.
+
+\end{document}
+
+

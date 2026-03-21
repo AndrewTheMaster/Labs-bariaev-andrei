@@ -1,0 +1,63 @@
+# --- OS ---
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# --- IDE / редакторы ---
+.idea/
+.vscode/
+*.code-workspace
+
+# --- Go ---
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.prof
+vendor/
+
+# --- Профилирование / артефакты замеров ---
+*.cpu
+*.mem
+*_cpu.out
+*_mem.out
+cpu.out
+mem.out
+perf.data
+perf.data.old
+
+# --- LaTeX ---
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+*.xdv
+*-blx.aux
+*-blx.bib
+*.run.xml
+*.nav
+*.snm
+*.vrb
+
+# Раскомментируй, если PDF не коммитишь:
+# *.pdf
+
+# --- Крупные локальные датасеты (раскомментируй при необходимости) ---
+# lab1/AllCombined*.txt
+
+# --- Прочее ---
+.env
+.env.local
+Untitled
+.~lock.*
