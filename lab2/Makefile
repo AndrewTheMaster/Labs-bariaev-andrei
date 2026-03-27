@@ -4,8 +4,9 @@ FUZZ_TIME    ?= 15s
 BENCH_FILTER ?= ^Benchmark
 RAW_DIR      := $(METRICS_OUT)/raw
 PLOT_DIR     := $(METRICS_OUT)/plots
+PROF_DIR     := $(METRICS_OUT)/profiles
 
-.PHONY: test test-short fuzz bench collect metrics plot clean
+.PHONY: test test-short fuzz bench collect metrics plot profile clean
 
 test:
 	go test ./...
@@ -46,6 +47,33 @@ metrics: collect plot
 plot:
 	mkdir -p $(PLOT_DIR)
 	gnuplot -e "raw_dir='$(RAW_DIR)'; plot_dir='$(PLOT_DIR)'" plot_metrics.gnuplot
+
+profile:
+	mkdir -p $(PROF_DIR) $(PLOT_DIR)
+	SIZES='10000,100000' go test -run '$$^' \
+		-bench '^BenchmarkFindNearby_VaryN$$' -benchmem \
+		-cpuprofile $(PROF_DIR)/cpu_findnearby.prof \
+		-memprofile $(PROF_DIR)/mem_findnearby.prof \
+		./internal/geoindex/ > /dev/null
+	SIZES='10000,100000' go test -run '$$^' \
+		-bench '^BenchmarkInsert$$' -benchmem \
+		-cpuprofile $(PROF_DIR)/cpu_insert.prof \
+		-memprofile $(PROF_DIR)/mem_insert.prof \
+		./internal/geoindex/ > /dev/null
+	go tool pprof -top $(PROF_DIR)/cpu_findnearby.prof  > $(PROF_DIR)/cpu_findnearby_top.txt
+	go tool pprof -top $(PROF_DIR)/cpu_insert.prof      > $(PROF_DIR)/cpu_insert_top.txt
+	go tool pprof -top $(PROF_DIR)/mem_findnearby.prof  > $(PROF_DIR)/mem_findnearby_top.txt
+	go tool pprof -top $(PROF_DIR)/mem_insert.prof      > $(PROF_DIR)/mem_insert_top.txt
+	@if command -v dot >/dev/null 2>&1; then \
+		go tool pprof -png $(PROF_DIR)/cpu_findnearby.prof > $(PLOT_DIR)/pprof_cpu_findnearby.png; \
+		go tool pprof -png $(PROF_DIR)/cpu_insert.prof     > $(PLOT_DIR)/pprof_cpu_insert.png; \
+		go tool pprof -png $(PROF_DIR)/mem_findnearby.prof > $(PLOT_DIR)/pprof_mem_findnearby.png; \
+		go tool pprof -png $(PROF_DIR)/mem_insert.prof     > $(PLOT_DIR)/pprof_mem_insert.png; \
+		echo "pprof PNG graphs saved to $(PLOT_DIR)"; \
+	else \
+		echo "graphviz not found — install with: sudo dnf install graphviz"; \
+		echo "text profiles saved to $(PROF_DIR)"; \
+	fi
 
 clean:
 	rm -rf metrics

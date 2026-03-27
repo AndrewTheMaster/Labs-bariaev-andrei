@@ -1,0 +1,134 @@
+File: geoindex.test
+Build ID: cec56f6d1ab0c1e2c3d9881bd7e2a0d47d8ea9f6
+Type: cpu
+Time: 2026-03-27 20:48:11 MSK
+Duration: 11.33s, Total samples = 17.30s (152.71%)
+Showing nodes accounting for 15.75s, 91.04% of 17.30s total
+Dropped 173 nodes (cum <= 0.09s)
+      flat  flat%   sum%        cum   cum%
+        2s 11.56% 11.56%      2.40s 13.87%  siaod-hw2/internal/kdtree.insertNode
+     1.85s 10.69% 22.25%      2.26s 13.06%  siaod-hw2/internal/geo.Encode
+     1.60s  9.25% 31.50%      1.60s  9.25%  runtime.(*mspan).base (inline)
+     1.11s  6.42% 37.92%      1.18s  6.82%  siaod-hw2/internal/geoindex_test.BenchmarkInsert.func5.1.1
+     1.05s  6.07% 43.99%      1.05s  6.07%  runtime.memclrNoHeapPointers
+     0.93s  5.38% 49.36%      1.30s  7.51%  runtime.findObject
+     0.87s  5.03% 54.39%      0.89s  5.14%  runtime.(*gcBits).bitp (inline)
+     0.64s  3.70% 58.09%      4.65s 26.88%  runtime.scanobject
+     0.53s  3.06% 61.16%      0.53s  3.06%  runtime.memmove
+     0.35s  2.02% 63.18%      0.45s  2.60%  runtime.typePointers.next
+     0.34s  1.97% 65.14%      0.34s  1.97%  runtime.madvise
+     0.32s  1.85% 66.99%      2.06s 11.91%  siaod-hw2/internal/brute.(*Scanner).Insert
+     0.30s  1.73% 68.73%      2.53s 14.62%  runtime.greyobject
+     0.27s  1.56% 70.29%      0.27s  1.56%  internal/runtime/maps.ctrlGroup.matchH2 (inline)
+     0.25s  1.45% 71.73%      1.34s  7.75%  runtime.mapassign_faststr
+     0.23s  1.33% 73.06%      0.32s  1.85%  runtime.spanOf (inline)
+     0.23s  1.33% 74.39%     10.89s 62.95%  siaod-hw2/internal/geoindex_test.BenchmarkInsert.func5.1
+     0.22s  1.27% 75.66%      0.22s  1.27%  runtime.procyield
+     0.17s  0.98% 76.65%      0.17s  0.98%  internal/chacha8rand.block
+     0.16s  0.92% 77.57%      4.59s 26.53%  siaod-hw2/internal/geoindex.(*Index).Insert
+     0.15s  0.87% 78.44%      0.15s  0.87%  aeshashbody
+     0.15s  0.87% 79.31%      0.15s  0.87%  runtime.futex
+     0.14s  0.81% 80.12%      0.14s  0.81%  runtime.nextFreeFast (inline)
+     0.13s  0.75% 80.87%      0.23s  1.33%  runtime.(*sweepLocked).sweep
+     0.12s  0.69% 81.56%      0.20s  1.16%  runtime.mallocgcTiny
+     0.11s  0.64% 82.20%      0.11s  0.64%  memeqbody
+     0.11s  0.64% 82.83%      0.66s  3.82%  runtime.mallocgcSmallScanNoHeader
+     0.10s  0.58% 83.41%      2.44s 14.10%  runtime.growslice
+     0.10s  0.58% 83.99%      0.41s  2.37%  runtime.slicebytetostring
+     0.09s  0.52% 84.51%      0.27s  1.56%  internal/runtime/maps.(*table).uncheckedPutSlot
+     0.09s  0.52% 85.03%      0.09s  0.52%  runtime.(*lfstack).pop (inline)
+     0.09s  0.52% 85.55%      0.09s  0.52%  runtime.arenaIndex (inline)
+     0.09s  0.52% 86.07%      0.09s  0.52%  runtime.markBits.isMarked (inline)
+     0.09s  0.52% 86.59%      0.09s  0.52%  runtime.typePointers.nextFast (inline)
+     0.08s  0.46% 87.05%      0.09s  0.52%  runtime.(*mspan).heapBitsSmallForAddr
+     0.08s  0.46% 87.51%      2.09s 12.08%  runtime.mallocgc
+     0.06s  0.35% 87.86%      0.10s  0.58%  runtime.scanblock
+     0.05s  0.29% 88.15%      0.28s  1.62%  math/rand.(*Rand).Int63 (inline)
+     0.05s  0.29% 88.44%      0.22s  1.27%  runtime.rand
+     0.04s  0.23% 88.67%      0.21s  1.21%  runtime.bulkBarrierPreWrite
+     0.04s  0.23% 88.90%      5.24s 30.29%  runtime.gcDrain
+     0.03s  0.17% 89.08%      0.31s  1.79%  math/rand.(*Rand).int31n
+     0.03s  0.17% 89.25%      0.48s  2.77%  runtime.(*wbBuf).get1 (inline)
+     0.03s  0.17% 89.42%      0.10s  0.58%  runtime.getempty
+     0.03s  0.17% 89.60%      2.43s 14.05%  siaod-hw2/internal/kdtree.(*KDTree).Insert
+     0.02s  0.12% 89.71%      0.11s  0.64%  gcWriteBarrier
+     0.02s  0.12% 89.83%      0.11s  0.64%  runtime.(*mspan).typePointersOfUnchecked
+     0.02s  0.12% 89.94%      0.60s  3.47%  runtime.bulkBarrierPreWriteSrcOnly
+     0.02s  0.12% 90.06%      0.12s  0.69%  runtime.deductAssistCredit
+     0.02s  0.12% 90.17%      0.09s  0.52%  runtime.lock2
+     0.02s  0.12% 90.29%      0.25s  1.45%  runtime.suspendG
+     0.02s  0.12% 90.40%      6.71s 38.79%  runtime.systemstack
+     0.02s  0.12% 90.52%      0.74s  4.28%  runtime.wbBufFlush1
+     0.01s 0.058% 90.58%      1.50s  8.67%  math/rand.(*Rand).Shuffle
+     0.01s 0.058% 90.64%      0.23s  1.33%  math/rand.(*runtimeSource).Int63
+     0.01s 0.058% 90.69%      0.17s  0.98%  runtime.(*gcWork).balance
+     0.01s 0.058% 90.75%      0.22s  1.27%  runtime.(*mcache).nextFree
+     0.01s 0.058% 90.81%      0.10s  0.58%  runtime.futexwakeup
+     0.01s 0.058% 90.87%      0.10s  0.58%  runtime.gcAssistAlloc1
+     0.01s 0.058% 90.92%      0.35s  2.02%  runtime.newobject
+     0.01s 0.058% 90.98%      0.25s  1.45%  runtime.schedule
+     0.01s 0.058% 91.04%      0.11s  0.64%  runtime.typedmemmove
+         0     0% 91.04%      0.17s  0.98%  internal/chacha8rand.(*State).Refill
+         0     0% 91.04%      0.56s  3.24%  internal/runtime/maps.(*table).rehash
+         0     0% 91.04%      0.18s  1.04%  internal/runtime/maps.(*table).reset
+         0     0% 91.04%      0.53s  3.06%  internal/runtime/maps.(*table).split
+         0     0% 91.04%      0.17s  0.98%  internal/runtime/maps.newGroups (inline)
+         0     0% 91.04%      0.19s  1.10%  internal/runtime/maps.newTable
+         0     0% 91.04%      0.17s  0.98%  internal/runtime/maps.newarray
+         0     0% 91.04%      0.11s  0.64%  internal/runtime/maps.typedmemmove
+         0     0% 91.04%      0.28s  1.62%  math/rand.(*Rand).Uint32 (inline)
+         0     0% 91.04%      1.50s  8.67%  math/rand.Shuffle
+         0     0% 91.04%      0.21s  1.21%  runtime.(*mcache).refill
+         0     0% 91.04%      0.15s  0.87%  runtime.(*mcentral).cacheSpan
+         0     0% 91.04%      0.15s  0.87%  runtime.(*mcentral).grow
+         0     0% 91.04%      0.12s  0.69%  runtime.(*mheap).alloc
+         0     0% 91.04%      0.12s  0.69%  runtime.(*mheap).alloc.func1
+         0     0% 91.04%      0.12s  0.69%  runtime.(*mheap).allocSpan
+         0     0% 91.04%      0.89s  5.14%  runtime.(*mspan).markBitsForIndex (inline)
+         0     0% 91.04%      0.35s  2.02%  runtime.(*pageAlloc).scavenge
+         0     0% 91.04%      0.35s  2.02%  runtime.(*pageAlloc).scavenge.func1
+         0     0% 91.04%      0.35s  2.02%  runtime.(*pageAlloc).scavengeOne
+         0     0% 91.04%      0.35s  2.02%  runtime.(*scavengerState).init.func2
+         0     0% 91.04%      0.35s  2.02%  runtime.(*scavengerState).run
+         0     0% 91.04%      0.14s  0.81%  runtime.(*wbBuf).get2 (inline)
+         0     0% 91.04%      0.35s  2.02%  runtime.bgscavenge
+         0     0% 91.04%      0.26s  1.50%  runtime.bgsweep
+         0     0% 91.04%      0.16s  0.92%  runtime.findRunnable
+         0     0% 91.04%      0.10s  0.58%  runtime.gcAssistAlloc
+         0     0% 91.04%      0.10s  0.58%  runtime.gcAssistAlloc.func2
+         0     0% 91.04%      5.41s 31.27%  runtime.gcBgMarkWorker
+         0     0% 91.04%      5.24s 30.29%  runtime.gcBgMarkWorker.func2
+         0     0% 91.04%      4.33s 25.03%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 91.04%      0.91s  5.26%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 91.04%      0.15s  0.87%  runtime.gcMarkDone
+         0     0% 91.04%      0.11s  0.64%  runtime.gcMarkTermination
+         0     0% 91.04%      0.12s  0.69%  runtime.gopreempt_m (inline)
+         0     0% 91.04%      0.12s  0.69%  runtime.goschedImpl
+         0     0% 91.04%      0.10s  0.58%  runtime.handoff
+         0     0% 91.04%      0.09s  0.52%  runtime.lock (inline)
+         0     0% 91.04%      0.09s  0.52%  runtime.lockWithRank (inline)
+         0     0% 91.04%      0.95s  5.49%  runtime.mallocgcLarge
+         0     0% 91.04%      0.41s  2.37%  runtime.markroot
+         0     0% 91.04%      0.31s  1.79%  runtime.markroot.func1
+         0     0% 91.04%      0.23s  1.33%  runtime.mcall
+         0     0% 91.04%      0.89s  5.14%  runtime.memclrNoHeapPointersChunked
+         0     0% 91.04%      0.12s  0.69%  runtime.morestack
+         0     0% 91.04%      0.17s  0.98%  runtime.newarray
+         0     0% 91.04%      0.13s  0.75%  runtime.newstack
+         0     0% 91.04%      0.10s  0.58%  runtime.notewakeup
+         0     0% 91.04%      0.23s  1.33%  runtime.park_m
+         0     0% 91.04%      0.09s  0.52%  runtime.preemptM (inline)
+         0     0% 91.04%      0.09s  0.52%  runtime.preemptone
+         0     0% 91.04%      0.09s  0.52%  runtime.signalM
+         0     0% 91.04%      0.10s  0.58%  runtime.startm
+         0     0% 91.04%      0.25s  1.45%  runtime.sweepone
+         0     0% 91.04%      0.34s  1.97%  runtime.sysUnused (inline)
+         0     0% 91.04%      0.34s  1.97%  runtime.sysUnusedOS
+         0     0% 91.04%      0.11s  0.64%  runtime.wakep
+         0     0% 91.04%      0.73s  4.22%  runtime.wbBufFlush
+         0     0% 91.04%      0.73s  4.22%  runtime.wbBufFlush.func1
+         0     0% 91.04%      0.17s  0.98%  runtime.wbMove
+         0     0% 91.04%     10.89s 62.95%  siaod-hw2/internal/geoindex_test.BenchmarkInsert.func5
+         0     0% 91.04%     10.89s 62.95%  siaod-hw2/internal/geoindex_test.runBatchBenchmark
+         0     0% 91.04%     10.93s 63.18%  testing.(*B).run1.func1
+         0     0% 91.04%     10.93s 63.18%  testing.(*B).runN

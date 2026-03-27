@@ -1,0 +1,102 @@
+File: geoindex.test
+Build ID: cec56f6d1ab0c1e2c3d9881bd7e2a0d47d8ea9f6
+Type: cpu
+Time: 2026-03-27 20:47:59 MSK
+Duration: 12.04s, Total samples = 16.89s (140.27%)
+Showing nodes accounting for 14.66s, 86.80% of 16.89s total
+Dropped 235 nodes (cum <= 0.08s)
+      flat  flat%   sum%        cum   cum%
+     1.55s  9.18%  9.18%      1.58s  9.35%  math.cos
+     1.24s  7.34% 16.52%      1.61s  9.53%  siaod-hw2/internal/geo.Encode
+     1.23s  7.28% 23.80%      3.99s 23.62%  runtime.scanobject
+     1.05s  6.22% 30.02%      1.91s 11.31%  math.asin
+     0.96s  5.68% 35.70%      1.01s  5.98%  math.sin
+     0.88s  5.21% 40.91%      1.02s  6.04%  runtime.findObject
+     0.78s  4.62% 45.53%      0.79s  4.68%  math.xatan (inline)
+     0.63s  3.73% 49.26%      5.69s 33.69%  siaod-hw2/internal/geo.DistanceKm
+     0.59s  3.49% 52.75%      0.62s  3.67%  runtime.(*gcBits).bitp (inline)
+     0.52s  3.08% 55.83%      0.52s  3.08%  runtime.(*mspan).base (inline)
+     0.45s  2.66% 58.50%      2.37s 14.03%  math.Asin (inline)
+     0.40s  2.37% 60.86%      0.40s  2.37%  aeshashbody
+     0.39s  2.31% 63.17%      0.39s  2.31%  runtime.memmove
+     0.32s  1.89% 65.07%      0.32s  1.89%  siaod-hw2/internal/kdtree.(*KDTree).FindNearby.func1
+     0.26s  1.54% 66.61%      0.74s  4.38%  runtime.mapaccess2_faststr
+     0.24s  1.42% 68.03%      0.24s  1.42%  runtime.memclrNoHeapPointers
+     0.20s  1.18% 69.21%      4.61s 27.29%  runtime.gcDrain
+     0.19s  1.12% 70.34%      0.19s  1.12%  runtime.(*mspan).heapBitsSmallForAddr
+     0.19s  1.12% 71.46%      3.43s 20.31%  siaod-hw2/internal/kdtree.searchRange
+     0.16s  0.95% 72.41%      0.16s  0.95%  siaod-hw2/internal/geo.DecodeBounds
+     0.15s  0.89% 73.30%      1.41s  8.35%  runtime.greyobject
+     0.14s  0.83% 74.13%      0.81s  4.80%  internal/reflectlite.Swapper.func9
+     0.14s  0.83% 74.96%      0.28s  1.66%  runtime.mallocgcTiny
+     0.14s  0.83% 75.78%      0.16s  0.95%  runtime.typePointers.next
+     0.14s  0.83% 76.61%      0.56s  3.32%  runtime.typedmemmove
+     0.12s  0.71% 77.32%      0.62s  3.67%  sort.partition_func
+     0.11s  0.65% 77.98%      0.66s  3.91%  internal/reflectlite.typedmemmove
+     0.11s  0.65% 78.63%      0.12s  0.71%  runtime.spanOf (inline)
+     0.11s  0.65% 79.28%      3.61s 21.37%  siaod-hw2/internal/geoindex.(*Index).candidateCells
+     0.10s  0.59% 79.87%      0.31s  1.84%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     0.10s  0.59% 80.46%      0.10s  0.59%  internal/runtime/maps.ctrlGroup.matchH2 (inline)
+     0.10s  0.59% 81.05%      0.10s  0.59%  runtime.futex
+     0.09s  0.53% 81.59%      0.53s  3.14%  runtime.mapassign_faststr
+     0.09s  0.53% 82.12%      0.09s  0.53%  runtime.nextFreeFast (inline)
+     0.09s  0.53% 82.65%      2.35s 13.91%  siaod-hw2/internal/brute.(*Scanner).FindNearby
+     0.09s  0.53% 83.19%      0.76s  4.50%  sort.insertionSort_func
+     0.07s  0.41% 83.60%      0.13s  0.77%  internal/runtime/maps.(*Map).putSlotSmallFastStr
+     0.07s  0.41% 84.01%      0.86s  5.09%  math.satan
+     0.05s   0.3% 84.31%      0.15s  0.89%  runtime.(*sweepLocked).sweep
+     0.05s   0.3% 84.61%      4.34s 25.70%  siaod-hw2/internal/geoindex.(*Index).FindNearby
+     0.04s  0.24% 84.84%      0.38s  2.25%  runtime.slicebytetostring
+     0.03s  0.18% 85.02%      0.44s  2.61%  runtime.mallocgcSmallScanHeader
+     0.03s  0.18% 85.20%      0.23s  1.36%  runtime.sweepone
+     0.03s  0.18% 85.38%      2.50s 14.80%  siaod-hw2/internal/geo.Neighbors
+     0.02s  0.12% 85.49%      0.13s  0.77%  runtime.(*gcControllerState).enlistWorker
+     0.02s  0.12% 85.61%      0.19s  1.12%  runtime.(*mcache).refill
+     0.02s  0.12% 85.73%      0.14s  0.83%  runtime.bulkBarrierPreWrite
+     0.02s  0.12% 85.85%      0.93s  5.51%  runtime.mallocgc
+     0.02s  0.12% 85.97%      0.15s  0.89%  runtime.mallocgcSmallScanNoHeader
+     0.02s  0.12% 86.09%      0.18s  1.07%  siaod-hw2/internal/geo.Decode
+     0.01s 0.059% 86.15%      1.59s  9.41%  math.Cos (inline)
+     0.01s 0.059% 86.20%      0.25s  1.48%  runtime.(*gcWork).balance
+     0.01s 0.059% 86.26%      0.14s  0.83%  runtime.(*mheap).allocSpan
+     0.01s 0.059% 86.32%      0.10s  0.59%  runtime.(*wbBuf).get2 (inline)
+     0.01s 0.059% 86.38%      0.18s  1.07%  runtime.findRunnable
+     0.01s 0.059% 86.44%      0.23s  1.36%  runtime.park_m
+     0.01s 0.059% 86.50%      0.11s  0.65%  runtime.preemptone
+     0.01s 0.059% 86.56%      0.10s  0.59%  runtime.signalM
+     0.01s 0.059% 86.62%      0.17s  1.01%  runtime.wbBufFlush1
+     0.01s 0.059% 86.68%     11.27s 66.73%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func6.1
+     0.01s 0.059% 86.74%     11.32s 67.02%  siaod-hw2/internal/geoindex_test.runBatchBenchmark
+     0.01s 0.059% 86.80%      1.45s  8.58%  sort.pdqsort_func
+         0     0% 86.80%      0.12s  0.71%  internal/runtime/maps.(*table).rehash
+         0     0% 86.80%      1.01s  5.98%  math.Sin (inline)
+         0     0% 86.80%      0.55s  3.26%  reflect.typedmemmove (inline)
+         0     0% 86.80%      0.19s  1.12%  runtime.(*mcache).nextFree
+         0     0% 86.80%      0.14s  0.83%  runtime.(*mcentral).cacheSpan
+         0     0% 86.80%      0.13s  0.77%  runtime.(*mcentral).grow
+         0     0% 86.80%      0.13s  0.77%  runtime.(*mheap).alloc
+         0     0% 86.80%      0.13s  0.77%  runtime.(*mheap).alloc.func1
+         0     0% 86.80%      0.62s  3.67%  runtime.(*mspan).markBitsForIndex (inline)
+         0     0% 86.80%      0.20s  1.18%  runtime.(*mspan).typePointersOfUnchecked
+         0     0% 86.80%      0.23s  1.36%  runtime.bgsweep
+         0     0% 86.80%      4.65s 27.53%  runtime.gcBgMarkWorker
+         0     0% 86.80%      4.61s 27.29%  runtime.gcBgMarkWorker.func2
+         0     0% 86.80%      2.28s 13.50%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 86.80%      2.33s 13.80%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 86.80%      0.59s  3.49%  runtime.growslice
+         0     0% 86.80%      0.12s  0.71%  runtime.handoff
+         0     0% 86.80%      0.11s  0.65%  runtime.markroot
+         0     0% 86.80%      0.23s  1.36%  runtime.mcall
+         0     0% 86.80%      0.10s  0.59%  runtime.preemptM (inline)
+         0     0% 86.80%      0.25s  1.48%  runtime.schedule
+         0     0% 86.80%      5.08s 30.08%  runtime.systemstack
+         0     0% 86.80%      0.16s  0.95%  runtime.wbBufFlush
+         0     0% 86.80%      0.16s  0.95%  runtime.wbBufFlush.func1
+         0     0% 86.80%      0.21s  1.24%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func3
+         0     0% 86.80%     11.67s 69.09%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func6
+         0     0% 86.80%      0.21s  1.24%  siaod-hw2/internal/kdtree.(*KDTree).BuildBalanced (inline)
+         0     0% 86.80%      4.57s 27.06%  siaod-hw2/internal/kdtree.(*KDTree).FindNearby
+         0     0% 86.80%      0.21s  1.24%  siaod-hw2/internal/kdtree.buildBalanced
+         0     0% 86.80%      1.47s  8.70%  sort.Slice
+         0     0% 86.80%     11.71s 69.33%  testing.(*B).run1.func1
+         0     0% 86.80%     11.71s 69.33%  testing.(*B).runN

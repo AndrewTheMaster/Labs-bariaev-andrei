@@ -1,0 +1,27 @@
+File: geoindex.test
+Build ID: cec56f6d1ab0c1e2c3d9881bd7e2a0d47d8ea9f6
+Type: alloc_space
+Time: 2026-03-27 20:48:11 MSK
+Showing nodes accounting for 3774.77MB, 98.83% of 3819.50MB total
+Dropped 45 nodes (cum <= 19.10MB)
+      flat  flat%   sum%        cum   cum%
+ 2483.71MB 65.03% 65.03%  2483.71MB 65.03%  siaod-hw2/internal/kdtree.searchRange
+  437.20MB 11.45% 76.47%   820.73MB 21.49%  siaod-hw2/internal/geoindex.(*Index).candidateCells
+  332.24MB  8.70% 85.17%  1153.98MB 30.21%  siaod-hw2/internal/geoindex.(*Index).FindNearby
+  266.53MB  6.98% 92.15%   383.03MB 10.03%  siaod-hw2/internal/geo.Neighbors
+     117MB  3.06% 95.21%      117MB  3.06%  siaod-hw2/internal/geo.Encode
+   34.50MB   0.9% 96.12%    34.50MB   0.9%  internal/reflectlite.Swapper
+   33.63MB  0.88% 97.00%    33.63MB  0.88%  siaod-hw2/internal/geoindex.(*Index).Insert
+   33.17MB  0.87% 97.87%    33.17MB  0.87%  siaod-hw2/internal/brute.(*Scanner).Insert (inline)
+   13.50MB  0.35% 98.22%    19.50MB  0.51%  siaod-hw2/internal/kdtree.buildBalanced
+   11.62MB   0.3% 98.52%  3696.40MB 96.78%  siaod-hw2/internal/geoindex_test.runBatchBenchmark
+    6.16MB  0.16% 98.68%    25.66MB  0.67%  siaod-hw2/internal/kdtree.(*KDTree).BuildBalanced (inline)
+    5.50MB  0.14% 98.83%  2516.21MB 65.88%  siaod-hw2/internal/kdtree.(*KDTree).FindNearby
+         0     0% 98.83%    20.02MB  0.52%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func2
+         0     0% 98.83%    25.66MB  0.67%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func3
+         0     0% 98.83%    33.17MB  0.87%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func5
+         0     0% 98.83%  3794.86MB 99.35%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func6
+         0     0% 98.83%  3684.78MB 96.47%  siaod-hw2/internal/geoindex_test.BenchmarkFindNearby_VaryN.func6.1
+         0     0% 98.83%    34.50MB   0.9%  sort.Slice
+         0     0% 98.83%  3810.71MB 99.77%  testing.(*B).run1.func1
+         0     0% 98.83%  3810.71MB 99.77%  testing.(*B).runN
