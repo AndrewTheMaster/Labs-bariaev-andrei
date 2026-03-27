@@ -9,28 +9,23 @@ set autoscale xfix
 
 bench_csv = raw_dir . "/benchmarks.csv"
 
+filter(b,i) = "< awk -F',' 'NR>1 && $1==\"" . b . "\" && $2==\"" . i . "\"' " . bench_csv
+
 # ── Insert: задержка с доверительными интервалами ─────────────────────────────
 set output plot_dir . "/insert_latency.pdf"
 set title "Insert latency per point"
 set xlabel "Dataset size"
 set ylabel "ns/item"
+unset logscale y
 plot \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "geohash-p5" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 7 title "geohash-p5", \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "geohash-p5" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle, \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "geohash-p6" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 9 title "geohash-p6", \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "geohash-p6" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle, \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "kdtree" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 5 title "kdtree", \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "kdtree" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle, \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "brute" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 11 title "brute", \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "brute" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle
+  filter("Insert","geohash-p5") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 7 title "geohash-p5", \
+  filter("Insert","geohash-p6") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 9 title "geohash-p6", \
+  filter("Insert","kdtree") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 5 title "kd-tree", \
+  filter("Insert","brute") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 11 title "brute"
 
 # ── Insert: пропускная способность ───────────────────────────────────────────
 set output plot_dir . "/insert_throughput.pdf"
@@ -38,45 +33,35 @@ set title "Insert throughput"
 set xlabel "Dataset size"
 set ylabel "ops/s"
 plot \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "geohash-p5" ? $3 : 1/0):8 \
-      with linespoints linewidth 2 pt 7 title "geohash-p5", \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "geohash-p6" ? $3 : 1/0):8 \
-      with linespoints linewidth 2 pt 9 title "geohash-p6", \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "kdtree" ? $3 : 1/0):8 \
-      with linespoints linewidth 2 pt 5 title "kdtree", \
-  bench_csv using (strcol(1) eq "Insert" && strcol(2) eq "brute" ? $3 : 1/0):8 \
-      with linespoints linewidth 2 pt 11 title "brute"
+  filter("Insert","geohash-p5") using 3:8 with linespoints lw 2 pt 7 title "geohash-p5", \
+  filter("Insert","geohash-p6") using 3:8 with linespoints lw 2 pt 9 title "geohash-p6", \
+  filter("Insert","kdtree")     using 3:8 with linespoints lw 2 pt 5 title "kd-tree", \
+  filter("Insert","brute")      using 3:8 with linespoints lw 2 pt 11 title "brute"
 
-# ── FindNearby: задержка с доверительными интервалами ────────────────────────
+# ── FindNearby: задержка (log Y — разброс ~100x между brute и kd-tree) ────────
 set output plot_dir . "/find_latency.pdf"
 set title "FindNearby latency (r=10 km)"
 set xlabel "Dataset size"
 set ylabel "ns/query"
+set logscale y 10
 plot \
-  bench_csv using (strcol(1) eq "FindNearby_VaryN" && strcol(2) eq "geohash-p5" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 7 title "geohash-p5", \
-  bench_csv using (strcol(1) eq "FindNearby_VaryN" && strcol(2) eq "geohash-p5" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle, \
-  bench_csv using (strcol(1) eq "FindNearby_VaryN" && strcol(2) eq "kdtree-balanced" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 5 title "kdtree-balanced", \
-  bench_csv using (strcol(1) eq "FindNearby_VaryN" && strcol(2) eq "kdtree-balanced" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle, \
-  bench_csv using (strcol(1) eq "FindNearby_VaryN" && strcol(2) eq "brute" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 11 title "brute", \
-  bench_csv using (strcol(1) eq "FindNearby_VaryN" && strcol(2) eq "brute" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle
+  filter("FindNearby_VaryN","geohash-p5") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 7 title "geohash-p5", \
+  filter("FindNearby_VaryN","kdtree-balanced") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 5 title "kd-tree (balanced)", \
+  filter("FindNearby_VaryN","kdtree-online") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 9 title "kd-tree (online)", \
+  filter("FindNearby_VaryN","brute") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 11 title "brute"
 
 # ── KD-Tree build: online vs balanced ────────────────────────────────────────
 set output plot_dir . "/kdtree_build.pdf"
 set title "KD-Tree build time per point"
 set xlabel "Dataset size"
 set ylabel "ns/item"
+unset logscale y
 plot \
-  bench_csv using (strcol(1) eq "BuildKDTree" && strcol(2) eq "online" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 7 title "online insert", \
-  bench_csv using (strcol(1) eq "BuildKDTree" && strcol(2) eq "online" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle, \
-  bench_csv using (strcol(1) eq "BuildKDTree" && strcol(2) eq "balanced" ? $3 : 1/0):6:($6-$7):($6+$7) \
-      with yerrorbars linewidth 2 pt 9 title "balanced build", \
-  bench_csv using (strcol(1) eq "BuildKDTree" && strcol(2) eq "balanced" ? $3 : 1/0):6 \
-      with lines linewidth 1 notitle
+  filter("BuildKDTree","online") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 7 title "online insert", \
+  filter("BuildKDTree","balanced") using 3:6:($6-$7):($6+$7) \
+      with yerrorlines lw 2 pt 9 title "balanced build"
