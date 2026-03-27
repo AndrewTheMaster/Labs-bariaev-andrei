@@ -14,9 +14,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	idx := lshtext.NewIndex(3, 64, 8, 8)
+	idx, err := lshtext.NewIndex(lshtext.DefaultConfig())
+	if err != nil {
+		panic(err)
+	}
 
-	// Индексируем все переданные файлы.
 	for i, path := range os.Args[1:] {
 		data, err := os.ReadFile(path)
 		if err != nil {
@@ -27,7 +29,6 @@ func main() {
 		}
 	}
 
-	// Ищем пары дублей.
 	pairs, err := idx.FullScanDuplicates(0.5)
 	if err != nil {
 		panic(err)
@@ -41,4 +42,3 @@ func main() {
 		fmt.Printf("pair (%d, %d) similarity=%.3f\n", p.ID1, p.ID2, p.Similarity)
 	}
 }
-

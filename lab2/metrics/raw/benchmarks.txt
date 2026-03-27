@@ -1,0 +1,50 @@
+goos: linux
+goarch: amd64
+pkg: siaod-hw2/internal/geoindex
+cpu: AMD Eng Sample: 100-000000829-50_Y             
+BenchmarkInsert/geohash-p5/size=1000-16         	   22093	    262366 ns/op	         1.429 ci95_ns/item	       262.4 ns/item	   3811471 ops/s	  264370 B/op	    2021 allocs/op
+BenchmarkInsert/geohash-p6/size=1000-16         	   21748	    273544 ns/op	         1.418 ci95_ns/item	       273.5 ns/item	   3655712 ops/s	  263025 B/op	    2021 allocs/op
+BenchmarkInsert/kdtree/size=1000-16             	   44884	    129012 ns/op	         0.4723 ci95_ns/item	       129.0 ns/item	   7751193 ops/s	   80044 B/op	    1000 allocs/op
+BenchmarkInsert/brute/size=1000-16              	  249769	     25579 ns/op	         0.1093 ci95_ns/item	        25.58 ns/item	  39094147 ops/s	  122746 B/op	      11 allocs/op
+BenchmarkInsert/geohash-p5/size=10000-16        	    1980	   3024204 ns/op	         1.658 ci95_ns/item	       302.4 ns/item	   3306655 ops/s	 1799474 B/op	   19479 allocs/op
+BenchmarkInsert/geohash-p6/size=10000-16        	    1725	   3524944 ns/op	         1.841 ci95_ns/item	       352.5 ns/item	   2836925 ops/s	 2299886 B/op	   20080 allocs/op
+BenchmarkInsert/kdtree/size=10000-16            	    3069	   1920211 ns/op	         1.499 ci95_ns/item	       192.0 ns/item	   5207762 ops/s	  800030 B/op	   10000 allocs/op
+BenchmarkInsert/brute/size=10000-16             	    4945	   1256754 ns/op	         1.055 ci95_ns/item	       125.7 ns/item	   7957007 ops/s	 2654067 B/op	      19 allocs/op
+BenchmarkInsert/geohash-p5/size=50000-16        	     400	  14940815 ns/op	         2.789 ci95_ns/item	       298.8 ns/item	   3346538 ops/s	 9856732 B/op	   80686 allocs/op
+BenchmarkInsert/geohash-p6/size=50000-16        	     338	  19293639 ns/op	         6.913 ci95_ns/item	       385.9 ns/item	   2591528 ops/s	10193944 B/op	  100232 allocs/op
+BenchmarkInsert/kdtree/size=50000-16            	     438	  13814123 ns/op	         2.783 ci95_ns/item	       276.3 ns/item	   3619484 ops/s	 4000016 B/op	   50000 allocs/op
+BenchmarkInsert/brute/size=50000-16             	     903	   6112630 ns/op	         2.048 ci95_ns/item	       122.3 ns/item	   8179786 ops/s	15916951 B/op	      26 allocs/op
+BenchmarkInsert/geohash-p5/size=100000-16       	     214	  27909957 ns/op	         3.547 ci95_ns/item	       279.1 ns/item	   3582951 ops/s	16910645 B/op	  145962 allocs/op
+BenchmarkInsert/geohash-p6/size=100000-16       	     148	  39666874 ns/op	         8.447 ci95_ns/item	       396.7 ns/item	   2520995 ops/s	21031399 B/op	  200016 allocs/op
+BenchmarkInsert/kdtree/size=100000-16           	     168	  34442728 ns/op	        11.58 ci95_ns/item	       344.4 ns/item	   2903370 ops/s	 8000023 B/op	  100000 allocs/op
+BenchmarkInsert/brute/size=100000-16            	     445	  13405411 ns/op	         1.428 ci95_ns/item	       134.1 ns/item	   7459674 ops/s	32260017 B/op	      29 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p5/size=1000-16         	   75824	     78802 ns/op	       259.6 ci95_ns/item	     78802 ns/item	     12690 ops/s	   22559 B/op	     554 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p6/size=1000-16         	    4438	   1401452 ns/op	      9212 ci95_ns/item	   1401452 ns/item	       713.5 ops/s	  348478 B/op	    8131 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-balanced/size=1000-16    	 4298270	      1283 ns/op	         1.210 ci95_ns/item	      1283 ns/item	    779563 ops/s	     630 B/op	       6 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-online/size=1000-16      	 3104770	      1837 ns/op	         1.846 ci95_ns/item	      1837 ns/item	    544363 ops/s	     625 B/op	       6 allocs/op
+BenchmarkFindNearby_VaryN/brute/size=1000-16              	   95287	     62374 ns/op	        60.67 ci95_ns/item	     62374 ns/item	     16032 ops/s	     627 B/op	       6 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p5/size=10000-16        	   63381	     93403 ns/op	       398.7 ci95_ns/item	     93403 ns/item	     10706 ops/s	   26525 B/op	     557 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p6/size=10000-16        	    3871	   1485918 ns/op	     11173 ci95_ns/item	   1485918 ns/item	       673.0 ops/s	  352451 B/op	    8134 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-balanced/size=10000-16   	  739306	      7449 ns/op	        15.01 ci95_ns/item	      7449 ns/item	    134243 ops/s	    4596 B/op	       9 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-online/size=10000-16     	  540990	     10534 ns/op	        21.65 ci95_ns/item	     10534 ns/item	     94935 ops/s	    4600 B/op	       9 allocs/op
+BenchmarkFindNearby_VaryN/brute/size=10000-16             	    9079	    621838 ns/op	      1089 ci95_ns/item	    621838 ns/item	      1608 ops/s	    4580 B/op	       9 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p5/size=50000-16        	   55120	    110209 ns/op	       399.1 ci95_ns/item	    110209 ns/item	      9074 ops/s	   41112 B/op	     559 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p6/size=50000-16        	    4340	   1358346 ns/op	      7567 ci95_ns/item	   1358346 ns/item	       736.2 ops/s	  367038 B/op	    8136 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-balanced/size=50000-16   	  202048	     29069 ns/op	        97.28 ci95_ns/item	     29069 ns/item	     34401 ops/s	   19185 B/op	      11 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-online/size=50000-16     	  184498	     32224 ns/op	        96.91 ci95_ns/item	     32224 ns/item	     31032 ops/s	   19189 B/op	      11 allocs/op
+BenchmarkFindNearby_VaryN/brute/size=50000-16             	    1866	   3260669 ns/op	     13114 ci95_ns/item	   3260669 ns/item	       306.7 ops/s	   19175 B/op	      11 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p5/size=100000-16       	   40998	    146571 ns/op	       571.8 ci95_ns/item	    146571 ns/item	      6823 ops/s	   61594 B/op	     560 allocs/op
+BenchmarkFindNearby_VaryN/geohash-p6/size=100000-16       	    4224	   1349107 ns/op	      7398 ci95_ns/item	   1349107 ns/item	       741.2 ops/s	  387518 B/op	    8137 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-balanced/size=100000-16  	   98223	     60780 ns/op	       238.1 ci95_ns/item	     60780 ns/item	     16453 ops/s	   39665 B/op	      12 allocs/op
+BenchmarkFindNearby_VaryN/kdtree-online/size=100000-16    	   95298	     61790 ns/op	       237.6 ci95_ns/item	     61790 ns/item	     16184 ops/s	   39667 B/op	      12 allocs/op
+BenchmarkFindNearby_VaryN/brute/size=100000-16            	     921	   6503688 ns/op	     61336 ci95_ns/item	   6503688 ns/item	       153.8 ops/s	   39650 B/op	      12 allocs/op
+BenchmarkBuildKDTree/online/size=1000-16                  	   45895	    131320 ns/op	         0.5124 ci95_ns/item	       131.3 ns/item	   7614999 ops/s	   80044 B/op	    1000 allocs/op
+BenchmarkBuildKDTree/balanced/size=1000-16                	    6906	    851291 ns/op	         4.711 ci95_ns/item	       851.3 ns/item	   1174686 ops/s	  218607 B/op	    3023 allocs/op
+BenchmarkBuildKDTree/online/size=10000-16                 	    3154	   2007940 ns/op	         1.534 ci95_ns/item	       200.8 ns/item	   4980230 ops/s	  800031 B/op	   10000 allocs/op
+BenchmarkBuildKDTree/balanced/size=10000-16               	     410	  15050778 ns/op	        12.17 ci95_ns/item	      1505 ns/item	    664417 ops/s	 2266514 B/op	   31809 allocs/op
+BenchmarkBuildKDTree/online/size=50000-16                 	     436	  14730939 ns/op	         5.243 ci95_ns/item	       294.6 ns/item	   3394217 ops/s	 4000023 B/op	   50000 allocs/op
+BenchmarkBuildKDTree/balanced/size=50000-16               	      69	  85823461 ns/op	        16.54 ci95_ns/item	      1716 ns/item	    582591 ops/s	11671585 B/op	  165535 allocs/op
+BenchmarkBuildKDTree/online/size=100000-16                	     176	  33706566 ns/op	         5.566 ci95_ns/item	       337.1 ns/item	   2966781 ops/s	 8000020 B/op	  100000 allocs/op
+BenchmarkBuildKDTree/balanced/size=100000-16              	      30	 191079706 ns/op	        23.54 ci95_ns/item	      1911 ns/item	    523342 ops/s	23343280 B/op	  331071 allocs/op
+PASS
+ok  	siaod-hw2/internal/geoindex	296.151s

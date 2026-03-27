@@ -14,6 +14,9 @@ type Store interface {
 	Put(key, value []byte) error
 	Get(key []byte) ([]byte, error)
 	Delete(key []byte) error
+	// Reset очищает все данные, оставляя структуру файла нетронутой.
+	// Все ключи удаляются; хранилище возвращается в начальное пустое состояние.
+	Reset() error
 	Close() error
 }
 
@@ -360,6 +363,18 @@ func alignUp(x, align uint64) uint64 {
 		return x
 	}
 	return x + align - r
+}
+
+// Reset обнуляет все ссылки на бакеты и сбрасывает указатель записи на начало
+// области данных. Эффективно стирает все хранимые пары ключ–значение без
+// пересоздания файла, что позволяет повторно использовать хранилище в бенчмарках.
+func (s *store) Reset() error {
+	for i := uint64(0); i < s.bucketCount; i++ {
+		s.setBucketHead(i, 0)
+	}
+	dataStart := binary.LittleEndian.Uint64(s.mmap[headerOffDataStart : headerOffDataStart+8])
+	s.setTailOffset(dataStart)
+	return nil
 }
 
 func equalBytes(a, b []byte) bool {

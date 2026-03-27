@@ -4,6 +4,7 @@ Thumbs.db
 *~
 *.swp
 *.swo
+.~lock.*
 
 # --- IDE / редакторы ---
 .idea/
@@ -19,6 +20,14 @@ Thumbs.db
 *.test
 *.prof
 vendor/
+
+# Скомпилированные бинари (go build ./cmd/...)
+bench-runner
+bench
+lsh-demo
+hashfs-bench
+lsh-bench
+perfecthash-bench
 
 # --- Профилирование / артефакты замеров ---
 *.cpu
@@ -53,11 +62,10 @@ perf.data.old
 # Раскомментируй, если PDF не коммитишь:
 # *.pdf
 
-# --- Крупные локальные датасеты (раскомментируй при необходимости) ---
-# lab1/AllCombined*.txt
+# --- Бенчмарки: сырые данные (генерируются `make collect`) ---
+# PNG-графики в metrics/plots/ намеренно ВКЛЮЧЕНЫ в git — они нужны для REPORT.md на GitHub
+metrics/raw/
 
-# --- Прочее ---
-.env
-.env.local
-Untitled
-.~lock.*
+# --- Крупные датасеты и черновики ---
+lab1/AllCombined*.txt
+results/

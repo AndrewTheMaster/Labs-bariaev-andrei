@@ -1,0 +1,21 @@
+goos: linux
+goarch: amd64
+pkg: siaod-hw1/internal/lshtext
+cpu: AMD Eng Sample: 100-000000829-50_Y             
+BenchmarkIndexBuild/size=500-16         	      52	  21272562 ns/op	       735.7 ci95_ns/item	     42545 ns/item	     23504 ops/s	 2377848 B/op	   22728 allocs/op
+BenchmarkIndexBuild/size=1000-16        	      27	  43143172 ns/op	       779.3 ci95_ns/item	     43143 ns/item	     23179 ops/s	 4766553 B/op	   45171 allocs/op
+BenchmarkIndexBuild/size=2500-16        	       9	 113099162 ns/op	      2122 ci95_ns/item	     45240 ns/item	     22104 ops/s	11217968 B/op	  112489 allocs/op
+BenchmarkIndexBuild/size=5000-16        	       5	 212892354 ns/op	       617.0 ci95_ns/item	     42578 ns/item	     23486 ops/s	22388379 B/op	  224240 allocs/op
+BenchmarkIndexBuild/size=7500-16        	       4	 327246627 ns/op	       909.5 ci95_ns/item	     43633 ns/item	     22918 ops/s	36298692 B/op	  336405 allocs/op
+BenchmarkIndexAdd/size=500-16           	      56	  21405813 ns/op	       654.3 ci95_ns/item	     42812 ns/item	     23358 ops/s	 1787224 B/op	   22589 allocs/op
+BenchmarkIndexAdd/size=1000-16          	      28	  43335179 ns/op	       637.1 ci95_ns/item	     43335 ns/item	     23076 ops/s	 3552024 B/op	   44991 allocs/op
+BenchmarkIndexAdd/size=2500-16          	      10	 105907346 ns/op	       487.3 ci95_ns/item	     42363 ns/item	     23606 ops/s	 8786825 B/op	  112235 allocs/op
+BenchmarkIndexAdd/size=5000-16          	       5	 209846396 ns/op	       492.4 ci95_ns/item	     41969 ns/item	     23827 ops/s	17493840 B/op	  223850 allocs/op
+BenchmarkIndexAdd/size=7500-16          	       4	 330224538 ns/op	      1448 ci95_ns/item	     44030 ns/item	     22712 ops/s	26521080 B/op	  335760 allocs/op
+BenchmarkIndexFullScan/size=500-16      	      49	  22480539 ns/op	      3701 ci95_ns/item	     44961 ns/item	     22241 ops/s	 1649224 B/op	   19084 allocs/op
+BenchmarkIndexFullScan/size=1000-16     	      27	  42185773 ns/op	       603.0 ci95_ns/item	     42186 ns/item	     23705 ops/s	 3276027 B/op	   37982 allocs/op
+BenchmarkIndexFullScan/size=2500-16     	      10	 106956442 ns/op	       731.5 ci95_ns/item	     42783 ns/item	     23374 ops/s	 8178816 B/op	   94718 allocs/op
+BenchmarkIndexFullScan/size=5000-16     	       5	 214882132 ns/op	      1232 ci95_ns/item	     42976 ns/item	     23269 ops/s	16277840 B/op	  188817 allocs/op
+BenchmarkIndexFullScan/size=7500-16     	       4	 316437024 ns/op	       225.8 ci95_ns/item	     42192 ns/item	     23701 ops/s	24388264 B/op	  283195 allocs/op
+PASS
+ok  	siaod-hw1/internal/lshtext	28.961s

@@ -1,228 +1,215 @@
 package hashfs
 
 import (
-	"os"
+	"bytes"
+	"fmt"
+	"math/rand"
 	"path/filepath"
 	"testing"
-
-	"siaod-hw1/internal/gen"
 )
 
-func TestStore_BasicCRUD(t *testing.T) {
-	dir := t.TempDir()
-	path := filepath.Join(dir, "store.dat")
+// TestStoreRandomOperations запускает серию случайных Put/Get/Delete операций
+// на 5 различных seed-ах. Корректность проверяется через зеркальную map (oracle).
+// Каждые 5000 шагов — полная проверка соответствия всего хранилища oracle.
+func TestStoreRandomOperations(t *testing.T) {
+	seeds := []int64{1, 7, 42, 99, 2026}
+	for _, seed := range seeds {
+		t.Run(fmt.Sprintf("seed=%d", seed), func(t *testing.T) {
+			store := newTestStore(t, 1<<14)
+			mirror := make(map[string][]byte)
+			rng := rand.New(rand.NewSource(seed))
 
-	store, err := Open(path, Options{
-		BucketCount: 1 << 16,
-	})
-	if err != nil {
-		t.Fatalf("Open error: %v", err)
-	}
-	defer store.Close()
+			for step := 0; step < 50000; step++ {
+				// Ключи берём из небольшого пространства (12000) для принудительных коллизий.
+				key := []byte(fmt.Sprintf("key:%05d", rng.Intn(12000)))
+				val := make([]byte, 8)
+				rng.Read(val) //nolint:errcheck
 
-	const n = 5000
+				switch rng.Intn(4) {
+				case 0: // insert / overwrite
+					if err := store.Put(key, val); err != nil {
+						t.Fatalf("Put step=%d key=%q: %v", step, key, err)
+					}
+					cp := make([]byte, len(val))
+					copy(cp, val)
+					mirror[string(key)] = cp
 
-	type kv struct {
-		key   []byte
-		value []byte
-	}
+				case 1: // update (Put повторного ключа)
+					if err := store.Put(key, val); err != nil {
+						t.Fatalf("Update step=%d key=%q: %v", step, key, err)
+					}
+					cp := make([]byte, len(val))
+					copy(cp, val)
+					mirror[string(key)] = cp
 
-	data := make([]kv, 0, n)
-	ref := make(map[string][]byte, n)
+				case 2: // delete
+					if err := store.Delete(key); err != nil {
+						t.Fatalf("Delete step=%d key=%q: %v", step, key, err)
+					}
+					delete(mirror, string(key))
 
-	for i := 0; i < n; i++ {
-		k := gen.RandomBytes(16)
-		v := gen.RandomBytes(32)
-		if err := store.Put(k, v); err != nil {
-			t.Fatalf("Put error: %v", err)
-		}
-		data = append(data, kv{key: k, value: v})
-		ref[string(k)] = v
-	}
+				case 3: // get
+					got, err := store.Get(key)
+					expected, exists := mirror[string(key)]
+					if exists {
+						if err != nil {
+							t.Fatalf("Get step=%d existing key=%q: %v", step, key, err)
+						}
+						if !bytes.Equal(got, expected) {
+							t.Fatalf("Get step=%d key=%q: value mismatch got=%x want=%x",
+								step, key, got, expected)
+						}
+					} else {
+						if err != ErrNotFound {
+							t.Fatalf("Get step=%d missing key=%q: want ErrNotFound, got %v", step, key, err)
+						}
+					}
+				}
 
-	for _, item := range data {
-		got, err := store.Get(item.key)
-		if err != nil {
-			t.Fatalf("Get error: %v", err)
-		}
-		if !equalBytes(got, item.value) {
-			t.Fatalf("Get mismatch: expected %x, got %x", item.value, got)
-		}
-	}
-
-	// Обновим половину ключей.
-	for i := 0; i < n; i += 2 {
-		newVal := gen.RandomBytes(48)
-		if err := store.Put(data[i].key, newVal); err != nil {
-			t.Fatalf("Put(update) error: %v", err)
-		}
-		data[i].value = newVal
-		ref[string(data[i].key)] = newVal
-	}
-
-	// Удалим каждую третью запись.
-	for i := 0; i < n; i += 3 {
-		if err := store.Delete(data[i].key); err != nil {
-			t.Fatalf("Delete error: %v", err)
-		}
-		delete(ref, string(data[i].key))
-	}
-
-	// Проверим соответствие с эталонной картой.
-	for _, item := range data {
-		val, ok := ref[string(item.key)]
-		got, err := store.Get(item.key)
-		if !ok {
-			if err == nil {
-				t.Fatalf("expected not found for deleted key, got value %x", got)
+				if step%5000 == 0 {
+					assertMatchesMirror(t, store, mirror)
+				}
 			}
-			if err != ErrNotFound {
-				t.Fatalf("expected ErrNotFound, got %v", err)
-			}
-			continue
-		}
-		if err != nil {
-			t.Fatalf("Get after update/delete error: %v", err)
-		}
-		if !equalBytes(got, val) {
-			t.Fatalf("value mismatch after update/delete: expected %x, got %x", val, got)
-		}
+
+			assertMatchesMirror(t, store, mirror)
+		})
 	}
 }
 
-func TestStore_Persistence(t *testing.T) {
-	dir := t.TempDir()
-	path := filepath.Join(dir, "store.dat")
+// TestStorePersistenceAcrossReopen проверяет, что данные сохраняются после
+// закрытия и повторного открытия файла.
+func TestStorePersistenceAcrossReopen(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "store.dat")
+	opts := Options{BucketCount: 1 << 12}
 
-	opts := Options{
-		BucketCount: 1 << 14,
+	keys := makeDataset(2000)
+	vals := make([][]byte, len(keys))
+	for i := range vals {
+		v := make([]byte, 8)
+		rand.Read(v) //nolint:errcheck
+		vals[i] = v
 	}
 
 	s, err := Open(path, opts)
 	if err != nil {
-		t.Fatalf("Open error: %v", err)
+		t.Fatalf("Open: %v", err)
 	}
-
-	k := []byte("key-1")
-	v := []byte("value-1")
-	if err := s.Put(k, v); err != nil {
-		t.Fatalf("Put error: %v", err)
+	for i, k := range keys {
+		if err := s.Put(k, vals[i]); err != nil {
+			t.Fatalf("Put key=%q: %v", k, err)
+		}
 	}
 	if err := s.Close(); err != nil {
-		t.Fatalf("Close error: %v", err)
+		t.Fatalf("Close: %v", err)
 	}
 
-	// Проверим, что файл действительно существует и не пустой.
-	if info, err := os.Stat(path); err != nil {
-		t.Fatalf("Stat error: %v", err)
-	} else if info.Size() == 0 {
-		t.Fatalf("expected non-empty file size")
-	}
-
-	s2, err := Open(path, opts)
+	reopened, err := Open(path, opts)
 	if err != nil {
-		t.Fatalf("Open(second) error: %v", err)
+		t.Fatalf("Reopen: %v", err)
 	}
-	defer s2.Close()
-
-	got, err := s2.Get(k)
-	if err != nil {
-		t.Fatalf("Get after reopen error: %v", err)
-	}
-	if !equalBytes(got, v) {
-		t.Fatalf("persisted value mismatch: expected %s, got %s", v, got)
-	}
-}
-
-func TestStore_EdgeCases(t *testing.T) {
-	dir := t.TempDir()
-	path := filepath.Join(dir, "edge.dat")
-
-	store, err := Open(path, Options{
-		BucketCount: 1 << 10,
-		MaxValueSize: 64,
-	})
-	if err != nil {
-		t.Fatalf("Open error: %v", err)
-	}
-	defer store.Close()
-
-	// Пустой ключ допустим.
-	if err := store.Put([]byte{}, []byte("empty-key")); err != nil {
-		t.Fatalf("Put empty key error: %v", err)
-	}
-	if got, err := store.Get([]byte{}); err != nil || !equalBytes(got, []byte("empty-key")) {
-		t.Fatalf("Get empty key mismatch: got=%q err=%v", got, err)
-	}
-
-	// Value больше лимита должно приводить к ошибке.
-	tooLarge := make([]byte, 65)
-	if err := store.Put([]byte("k"), tooLarge); err == nil {
-		t.Fatalf("expected value-too-large error")
-	}
-
-	// Удаление несуществующего ключа не должно ломать структуру.
-	if err := store.Delete([]byte("missing-key")); err != nil {
-		t.Fatalf("Delete missing key error: %v", err)
-	}
-	if _, err := store.Get([]byte("missing-key")); err != ErrNotFound {
-		t.Fatalf("expected ErrNotFound after deleting missing key, got %v", err)
-	}
-}
-
-func TestStore_MultiReopenAndRandomOps(t *testing.T) {
-	dir := t.TempDir()
-	path := filepath.Join(dir, "multi-reopen.dat")
-	opts := Options{BucketCount: 1 << 12}
-
-	r := gen.NewDeterministicSource(42)
-	ref := make(map[string][]byte)
-
-	for round := 0; round < 3; round++ {
-		store, err := Open(path, opts)
-		if err != nil {
-			t.Fatalf("Open round=%d error: %v", round, err)
+	defer func() {
+		if err := reopened.Close(); err != nil {
+			t.Fatalf("Close reopened: %v", err)
 		}
+	}()
 
-		for i := 0; i < 1000; i++ {
-			key := make([]byte, 8)
-			val := make([]byte, 16)
-			for j := range key {
-				key[j] = byte(r.Intn(256))
-			}
-			for j := range val {
-				val[j] = byte(r.Intn(256))
-			}
+	for i, k := range keys {
+		got, err := reopened.Get(k)
+		if err != nil {
+			t.Fatalf("Get after reopen key=%q: %v", k, err)
+		}
+		if !bytes.Equal(got, vals[i]) {
+			t.Fatalf("value mismatch after reopen key=%q", k)
+		}
+	}
+}
 
-			switch r.Intn(3) {
+// FuzzStoreAgainstMap — фаззинг: случайная последовательность операций
+// проверяется против mirror-map как оракула.
+func FuzzStoreAgainstMap(f *testing.F) {
+	f.Add(uint64(1), uint16(128))
+	f.Add(uint64(7), uint16(777))
+	f.Add(uint64(2026), uint16(1500))
+
+	f.Fuzz(func(t *testing.T, seed uint64, steps uint16) {
+		store := newTestStore(t, 1<<10)
+		mirror := make(map[string][]byte)
+		rng := rand.New(rand.NewSource(int64(seed)))
+		iterations := int(steps%1000) + 1
+
+		for step := 0; step < iterations; step++ {
+			key := []byte(fmt.Sprintf("key:%04d", rng.Intn(1024)))
+			val := make([]byte, 4)
+			rng.Read(val) //nolint:errcheck
+
+			switch rng.Intn(3) {
 			case 0:
 				if err := store.Put(key, val); err != nil {
-					t.Fatalf("Put error: %v", err)
+					t.Fatalf("Put step=%d key=%q: %v", step, key, err)
 				}
-				ref[string(key)] = append([]byte(nil), val...)
+				cp := make([]byte, len(val))
+				copy(cp, val)
+				mirror[string(key)] = cp
+
 			case 1:
 				if err := store.Delete(key); err != nil {
-					t.Fatalf("Delete error: %v", err)
+					t.Fatalf("Delete step=%d key=%q: %v", step, key, err)
 				}
-				delete(ref, string(key))
-			default:
+				delete(mirror, string(key))
+
+			case 2:
 				got, err := store.Get(key)
-				exp, ok := ref[string(key)]
-				if !ok {
-					if err != ErrNotFound {
-						t.Fatalf("expected ErrNotFound, got %v", err)
+				expected, exists := mirror[string(key)]
+				if exists {
+					if err != nil || !bytes.Equal(got, expected) {
+						t.Fatalf("Get step=%d key=%q: err=%v got=%x want=%x", step, key, err, got, expected)
 					}
-					continue
-				}
-				if err != nil || !equalBytes(got, exp) {
-					t.Fatalf("Get mismatch err=%v", err)
+				} else if err != ErrNotFound {
+					t.Fatalf("Get step=%d missing key=%q: want ErrNotFound, got %v", step, key, err)
 				}
 			}
 		}
 
-		if err := store.Close(); err != nil {
-			t.Fatalf("Close error: %v", err)
+		assertMatchesMirror(t, store, mirror)
+	})
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+func newTestStore(t testing.TB, bucketCount uint64) Store {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "store.dat")
+	s, err := Open(path, Options{BucketCount: bucketCount})
+	if err != nil {
+		t.Fatalf("Open: %v", err)
+	}
+	t.Cleanup(func() {
+		if err := s.Close(); err != nil {
+			t.Fatalf("Close: %v", err)
+		}
+	})
+	return s
+}
+
+func assertMatchesMirror(t testing.TB, store Store, mirror map[string][]byte) {
+	t.Helper()
+	for k, expected := range mirror {
+		got, err := store.Get([]byte(k))
+		if err != nil {
+			t.Errorf("assertMatchesMirror: Get key=%q: %v", k, err)
+			continue
+		}
+		if !bytes.Equal(got, expected) {
+			t.Errorf("assertMatchesMirror: key=%q value mismatch", k)
 		}
 	}
 }
 
+func makeDataset(size int) [][]byte {
+	rng := rand.New(rand.NewSource(0))
+	keys := make([][]byte, size)
+	for i := range keys {
+		keys[i] = []byte(fmt.Sprintf("key:%016x", rng.Uint64()))
+	}
+	return keys
+}

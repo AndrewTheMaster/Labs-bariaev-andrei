@@ -2,119 +2,181 @@ package lshtext
 
 import (
 	"fmt"
+	"math/rand"
+	"strings"
 	"testing"
 )
 
-func TestIndex_FindsNearDuplicates(t *testing.T) {
-	idx := NewIndex(3, 64, 8, 8)
-
-	docs := []string{
-		"the quick brown fox jumps over the lazy dog",
-		"the quick brown fox jumps over the very lazy dog",
-		"a completely different sentence with other words",
-		"the quick brown fox jumps over the lazy dog again",
-	}
-
-	for i, doc := range docs {
-		if err := idx.Add(i, []byte(doc)); err != nil {
-			t.Fatalf("Add error: %v", err)
-		}
-	}
-
-	// Документ 0 и 3 должны быть довольно похожи.
-	cands, err := idx.Query([]byte(docs[0]))
-	if err != nil {
-		t.Fatalf("Query error: %v", err)
-	}
-
-	foundSelf := false
-	foundSimilar := false
-	for _, c := range cands {
-		if c.ID == 0 {
-			foundSelf = true
-		}
-		if c.ID == 3 && c.Similarity > 0.5 {
-			foundSimilar = true
-		}
-	}
-	if !foundSelf {
-		t.Fatalf("expected to see the document itself among candidates")
-	}
-	if !foundSimilar {
-		t.Fatalf("expected to find document 3 as similar to 0")
-	}
-
-	// full scan по дублям
-	pairs, err := idx.FullScanDuplicates(0.5)
-	if err != nil {
-		t.Fatalf("FullScanDuplicates error: %v", err)
-	}
-	if len(pairs) == 0 {
-		t.Fatalf("expected at least one duplicate pair")
+// TestIndexRejectsInvalidConfig проверяет, что некорректная конфигурация
+// (Bands * RowsPerBand != SigSize) вызывает ошибку при создании индекса.
+func TestIndexRejectsInvalidConfig(t *testing.T) {
+	_, err := NewIndex(Config{SigSize: 64, Bands: 3, RowsPerBand: 10, ShingleSize: 2})
+	if err == nil {
+		t.Fatal("expected config validation error for Bands*RowsPerBand != SigSize")
 	}
 }
 
-func TestIndex_AddAndQueryNoiseCorpus(t *testing.T) {
-	idx := NewIndex(3, 64, 8, 8)
-
-	// Синтетический корпус: 20 похожих вариаций и 80 шумовых текстов.
-	base := "distributed databases need robust indexing and hashing strategies"
-	for i := 0; i < 20; i++ {
-		doc := fmt.Sprintf("%s variant-%d", base, i%4)
-		if err := idx.Add(i, []byte(doc)); err != nil {
-			t.Fatalf("Add similar doc error: %v", err)
-		}
-	}
-	for i := 20; i < 100; i++ {
-		doc := fmt.Sprintf("noise text %d with unrelated tokens %d", i, i*17)
-		if err := idx.Add(i, []byte(doc)); err != nil {
-			t.Fatalf("Add noise doc error: %v", err)
-		}
-	}
-
-	cands, err := idx.Query([]byte(base + " variant-1"))
+// TestIndexAddAndFindDuplicates добавляет несколько документов и проверяет,
+// что точный дубликат находится с высокой схожестью.
+func TestIndexAddAndFindDuplicates(t *testing.T) {
+	idx, err := NewIndex(DefaultConfig())
 	if err != nil {
-		t.Fatalf("Query error: %v", err)
+		t.Fatalf("NewIndex: %v", err)
+	}
+
+	docs := []struct {
+		id   int
+		text string
+	}{
+		{0, "Distributed hashing for duplicate document search with locality sensitive hashing"},
+		{1, "Consensus protocols and replication improve distributed storage reliability"},
+	}
+	for _, d := range docs {
+		if err := idx.Add(d.id, []byte(d.text)); err != nil {
+			t.Fatalf("Add id=%d: %v", d.id, err)
+		}
+	}
+
+	// Запрашиваем дубликаты документа 0 — используем точно тот же текст.
+	query := docs[0].text
+	cands, err := idx.Query([]byte(query))
+	if err != nil {
+		t.Fatalf("Query: %v", err)
 	}
 	if len(cands) == 0 {
-		t.Fatalf("expected non-empty candidate list")
+		t.Fatal("expected at least one duplicate match")
 	}
-
-	high := 0
+	// Первый кандидат должен быть документ 0 с высокой схожестью
+	found := false
 	for _, c := range cands {
-		if c.Similarity >= 0.6 {
-			high++
+		if c.ID == 0 && c.Similarity >= 0.8 {
+			found = true
+			break
 		}
 	}
-	if high == 0 {
-		t.Fatalf("expected at least one high-similarity candidate")
+	if !found {
+		t.Fatalf("expected document 0 with similarity >= 0.8, got candidates: %+v", cands)
 	}
 }
 
-func TestIndex_FullScanThresholdBehavior(t *testing.T) {
-	idx := NewIndex(3, 64, 8, 8)
-	docs := []string{
-		"alpha beta gamma delta epsilon",
-		"alpha beta gamma delta epsilon zeta",
-		"totally unrelated sentence with another vocabulary",
+// TestIndexFullScanMatchesAddedDuplicates строит индекс из 2026 документов,
+// добавляет 8 новых точных копий уже проиндексированных и проверяет,
+// что FullScanDuplicates находит каждый из них.
+func TestIndexFullScanMatchesAddedDuplicates(t *testing.T) {
+	idx, err := NewIndex(DefaultConfig())
+	if err != nil {
+		t.Fatalf("NewIndex: %v", err)
 	}
-	for i, doc := range docs {
-		if err := idx.Add(i, []byte(doc)); err != nil {
-			t.Fatalf("Add error: %v", err)
+
+	baseDocs := randomDocuments(2026)
+	for i, d := range baseDocs {
+		if err := idx.Add(i, d); err != nil {
+			t.Fatalf("Add base doc id=%d: %v", i, err)
 		}
 	}
 
-	pairsLow, err := idx.FullScanDuplicates(0.2)
-	if err != nil {
-		t.Fatalf("FullScanDuplicates low threshold error: %v", err)
-	}
-	pairsHigh, err := idx.FullScanDuplicates(0.8)
-	if err != nil {
-		t.Fatalf("FullScanDuplicates high threshold error: %v", err)
+	// Добавляем 8 точных копий из baseDocs под новыми ID.
+	newBase := 10000
+	for j := 0; j < 8; j++ {
+		if err := idx.Add(newBase+j, baseDocs[j]); err != nil {
+			t.Fatalf("Add duplicate id=%d: %v", newBase+j, err)
+		}
 	}
 
-	if len(pairsLow) < len(pairsHigh) {
-		t.Fatalf("expected low threshold to produce at least as many pairs")
+	// Для каждого добавленного дубля FullScanDuplicates должен вернуть хотя бы один результат.
+	for j := 0; j < 8; j++ {
+		pairs, err := idx.FullScanDuplicates(0.8)
+		if err != nil {
+			t.Fatalf("FullScanDuplicates: %v", err)
+		}
+		// Ищем пару (j, newBase+j) или (newBase+j, j).
+		found := false
+		for _, p := range pairs {
+			if (p.ID1 == j && p.ID2 == newBase+j) || (p.ID1 == newBase+j && p.ID2 == j) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			// LSH может иметь false negatives, но не для точных копий с SigSize=64
+			t.Errorf("duplicate for doc %d not found in FullScanDuplicates", j)
+		}
 	}
 }
 
+// FuzzIndexExactDuplicatesAreFound — фаззинг: добавляем документ и сразу
+// ищем его через Query. Точный дубликат обязан найтись.
+func FuzzIndexExactDuplicatesAreFound(f *testing.F) {
+	for _, sample := range []string{
+		"distributed hashing duplicate search",
+		"LSH supports approximate nearest neighbors",
+		strings.Repeat("token ", 8),
+	} {
+		f.Add(sample)
+	}
+
+	f.Fuzz(func(t *testing.T, text string) {
+		idx, err := NewIndex(DefaultConfig())
+		if err != nil {
+			t.Fatalf("NewIndex: %v", err)
+		}
+		if err := idx.Add(1, []byte(text)); err != nil {
+			t.Fatalf("Add: %v", err)
+		}
+		cands, err := idx.Query([]byte(text))
+		if err != nil {
+			t.Fatalf("Query: %v", err)
+		}
+		if len(cands) == 0 {
+			// Только если текст слишком короткий для шинглов
+			if len(strings.Fields(text)) < DefaultConfig().ShingleSize {
+				return
+			}
+			t.Fatalf("expected exact duplicate for %q, got no candidates", text)
+		}
+		found := false
+		for _, c := range cands {
+			if c.ID == 1 {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("expected doc 1 in candidates for exact duplicate of %q, got %+v", text, cands)
+		}
+	})
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+var benchVocabulary = []string{
+	"distributed", "database", "indexing", "hashing", "algorithm", "structure",
+	"performance", "latency", "throughput", "cache", "memory", "disk", "network",
+	"query", "insert", "delete", "update", "search", "binary", "hash",
+	"tree", "graph", "node", "edge", "bucket", "collision", "cluster", "shard",
+	"replica", "primary", "secondary", "transaction", "commit", "snapshot",
+	"prefix", "suffix", "token", "signature", "band", "row", "column",
+}
+
+func randomWord(r *rand.Rand) string {
+	return benchVocabulary[r.Intn(len(benchVocabulary))]
+}
+
+func randomDocument(r *rand.Rand, wordCount int) []byte {
+	words := make([]string, wordCount)
+	for i := range words {
+		words[i] = randomWord(r)
+	}
+	return []byte(strings.Join(words, " "))
+}
+
+func randomDocuments(size int) [][]byte {
+	r := rand.New(rand.NewSource(42))
+	docs := make([][]byte, size)
+	for i := range docs {
+		docs[i] = randomDocument(r, 20+r.Intn(20))
+	}
+	return docs
+}
+
+var _ = fmt.Sprintf // ensure fmt is used

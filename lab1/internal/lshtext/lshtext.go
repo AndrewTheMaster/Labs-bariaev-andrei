@@ -1,6 +1,7 @@
 package lshtext
 
 import (
+	"errors"
 	"hash/fnv"
 	"strings"
 )
@@ -31,34 +32,46 @@ type Index struct {
 	bandBuckets []map[uint64][]int
 }
 
+// Config задаёт параметры LSH-индекса.
+type Config struct {
+	ShingleSize int
+	SigSize     int
+	Bands       int
+	RowsPerBand int
+}
+
+// DefaultConfig возвращает разумные значения по умолчанию.
+func DefaultConfig() Config {
+	return Config{ShingleSize: 3, SigSize: 64, Bands: 8, RowsPerBand: 8}
+}
+
 // NewIndex создаёт новый индекс с заданными параметрами.
-// shingleSize — размер шингла (в словах), sigSize — длина подписи,
-// bands и rowsPerBand задают LSH-разбиение (bands*rowsPerBand == sigSize).
-func NewIndex(shingleSize, sigSize, bands, rowsPerBand int) *Index {
-	if sigSize <= 0 {
-		sigSize = 64
+// Возвращает ошибку, если Bands * RowsPerBand != SigSize.
+func NewIndex(cfg Config) (*Index, error) {
+	if cfg.SigSize <= 0 {
+		cfg.SigSize = 64
 	}
-	if shingleSize <= 0 {
-		shingleSize = 3
+	if cfg.ShingleSize <= 0 {
+		cfg.ShingleSize = 3
 	}
-	if bands <= 0 {
-		bands = 8
+	if cfg.Bands <= 0 || cfg.RowsPerBand <= 0 {
+		return nil, errors.New("lshtext: Bands and RowsPerBand must be positive")
 	}
-	if rowsPerBand <= 0 {
-		rowsPerBand = sigSize / bands
+	if cfg.Bands*cfg.RowsPerBand != cfg.SigSize {
+		return nil, errors.New("lshtext: Bands * RowsPerBand must equal SigSize")
 	}
-	bandBuckets := make([]map[uint64][]int, bands)
+	bandBuckets := make([]map[uint64][]int, cfg.Bands)
 	for i := range bandBuckets {
 		bandBuckets[i] = make(map[uint64][]int)
 	}
 	return &Index{
-		shingleSize: shingleSize,
-		sigSize:     sigSize,
-		bands:       bands,
-		rowsPerBand: rowsPerBand,
+		shingleSize: cfg.ShingleSize,
+		sigSize:     cfg.SigSize,
+		bands:       cfg.Bands,
+		rowsPerBand: cfg.RowsPerBand,
 		signatures:  make(map[int][]uint64),
 		bandBuckets: bandBuckets,
-	}
+	}, nil
 }
 
 // Add добавляет документ в индекс.
