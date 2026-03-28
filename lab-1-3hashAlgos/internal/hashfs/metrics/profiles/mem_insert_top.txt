@@ -1,0 +1,25 @@
+File: hashfs.test
+Build ID: 6e1a6eb78262a530bf33065cba5ed0ae517361b8
+Type: alloc_space
+Time: 2026-03-28 19:00:59 MSK
+Showing nodes accounting for 283.97MB, 98.94% of 287.01MB total
+Dropped 26 nodes (cum <= 1.44MB)
+      flat  flat%   sum%        cum   cum%
+  214.52MB 74.74% 74.74%   214.52MB 74.74%  siaod-hw1/internal/hashfs.(*store).appendRecord
+   57.14MB 19.91% 94.65%    57.14MB 19.91%  siaod-hw1/internal/hashfs.shuffleKeys
+       6MB  2.09% 96.74%        6MB  2.09%  fmt.Sprintf
+    4.31MB  1.50% 98.24%    10.31MB  3.59%  siaod-hw1/internal/hashfs.makeDataset
+       2MB   0.7% 98.94%     2.50MB  0.87%  runtime.allocm
+         0     0% 98.94%        2MB   0.7%  runtime.mcall
+         0     0% 98.94%     2.50MB  0.87%  runtime.newm
+         0     0% 98.94%        2MB   0.7%  runtime.park_m
+         0     0% 98.94%     2.50MB  0.87%  runtime.resetspinning
+         0     0% 98.94%     2.50MB  0.87%  runtime.schedule
+         0     0% 98.94%     2.50MB  0.87%  runtime.startm
+         0     0% 98.94%     2.50MB  0.87%  runtime.wakep
+         0     0% 98.94%   214.52MB 74.74%  siaod-hw1/internal/hashfs.(*store).Put
+         0     0% 98.94%   281.97MB 98.24%  siaod-hw1/internal/hashfs.BenchmarkStoreInsert.func1
+         0     0% 98.94%   271.66MB 94.65%  siaod-hw1/internal/hashfs.BenchmarkStoreInsert.func1.2
+         0     0% 98.94%   271.66MB 94.65%  siaod-hw1/internal/hashfs.runBatchBenchmark
+         0     0% 98.94%   281.97MB 98.24%  testing.(*B).run1.func1
+         0     0% 98.94%   281.97MB 98.24%  testing.(*B).runN

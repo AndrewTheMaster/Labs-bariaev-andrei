@@ -1,0 +1,22 @@
+File: perfecthash.test
+Build ID: b957437ffadc94bb1f41466a15c7958e26d6eacf
+Type: alloc_space
+Time: 2026-03-28 19:01:14 MSK
+Showing nodes accounting for 508.69MB, 99.28% of 512.36MB total
+Dropped 31 nodes (cum <= 2.56MB)
+      flat  flat%   sum%        cum   cum%
+  441.62MB 86.19% 86.19%   441.62MB 86.19%  siaod-hw1/internal/perfecthash.(*Builder).Build (inline)
+   61.56MB 12.01% 98.21%    61.56MB 12.01%  siaod-hw1/internal/perfecthash.makeDataset
+    5.51MB  1.08% 99.28%     5.51MB  1.08%  runtime.allocm
+         0     0% 99.28%     3.01MB  0.59%  runtime.mcall
+         0     0% 99.28%     5.51MB  1.08%  runtime.newm
+         0     0% 99.28%     3.01MB  0.59%  runtime.park_m
+         0     0% 99.28%     5.51MB  1.08%  runtime.resetspinning
+         0     0% 99.28%     5.51MB  1.08%  runtime.schedule
+         0     0% 99.28%     5.51MB  1.08%  runtime.startm
+         0     0% 99.28%     5.51MB  1.08%  runtime.wakep
+         0     0% 99.28%   503.18MB 98.21%  siaod-hw1/internal/perfecthash.BenchmarkPerfectHashBuild.func1
+         0     0% 99.28%   441.62MB 86.19%  siaod-hw1/internal/perfecthash.BenchmarkPerfectHashBuild.func1.1
+         0     0% 99.28%   441.62MB 86.19%  siaod-hw1/internal/perfecthash.runBatchBenchmark
+         0     0% 99.28%   503.68MB 98.31%  testing.(*B).run1.func1
+         0     0% 99.28%   503.68MB 98.31%  testing.(*B).runN

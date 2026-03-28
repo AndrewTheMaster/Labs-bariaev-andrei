@@ -1,0 +1,15 @@
+File: lsh3d.test
+Build ID: 0cbe8151a165aaecf71ebdb0a6c58c5bf4f8397e
+Type: alloc_space
+Time: 2026-03-28 19:17:09 MSK
+Showing nodes accounting for 2.60GB, 99.71% of 2.60GB total
+Dropped 25 nodes (cum <= 0.01GB)
+      flat  flat%   sum%        cum   cum%
+    2.21GB 85.06% 85.06%     2.21GB 85.06%  siaod-hw1/internal/lsh3d.(*Index).Query
+    0.37GB 14.14% 99.21%     0.37GB 14.14%  siaod-hw1/internal/lsh3d.(*Index).Add
+    0.01GB  0.51% 99.71%     0.01GB  0.51%  siaod-hw1/internal/lsh3d.genPoints
+         0     0% 99.71%     2.60GB 99.71%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DQuery.func1
+         0     0% 99.71%     2.59GB 99.60%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DQuery.func1.1
+         0     0% 99.71%     2.59GB 99.60%  siaod-hw1/internal/lsh3d.runBatchBenchmark
+         0     0% 99.71%     2.60GB 99.71%  testing.(*B).run1.func1
+         0     0% 99.71%     2.60GB 99.71%  testing.(*B).runN

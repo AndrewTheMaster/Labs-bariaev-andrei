@@ -4,8 +4,9 @@ FUZZ_TIME    ?= 15s
 BENCH_FILTER ?= ^BenchmarkPerfectHash
 RAW_DIR      := $(METRICS_OUT)/raw
 PLOT_DIR     := $(METRICS_OUT)/plots
+PROF_DIR     := $(METRICS_OUT)/profiles
 
-.PHONY: test fuzz bench collect metrics plot clean
+.PHONY: test fuzz bench collect metrics plot profile clean
 
 test:
 	go test ./...
@@ -40,6 +41,20 @@ metrics: collect plot
 plot:
 	mkdir -p $(PLOT_DIR)
 	gnuplot -e "raw_dir='$(RAW_DIR)'; plot_dir='$(PLOT_DIR)'" plot_metrics.gnuplot
+
+profile:
+	mkdir -p $(PROF_DIR) $(PLOT_DIR)
+	SIZES='100000,500000' go test -run '$$^' -bench '^BenchmarkPerfectHashBuild$$' -benchmem \
+		-cpuprofile $(PROF_DIR)/cpu_build.prof \
+		-memprofile $(PROF_DIR)/mem_build.prof . > /dev/null
+	SIZES='100000,500000' go test -run '$$^' -bench '^BenchmarkPerfectHashLookup$$' -benchmem \
+		-cpuprofile $(PROF_DIR)/cpu_lookup.prof \
+		-memprofile $(PROF_DIR)/mem_lookup.prof . > /dev/null
+	go tool pprof -top $(PROF_DIR)/cpu_build.prof  > $(PROF_DIR)/cpu_build_top.txt
+	go tool pprof -top $(PROF_DIR)/cpu_lookup.prof > $(PROF_DIR)/cpu_lookup_top.txt
+	go tool pprof -top $(PROF_DIR)/mem_build.prof  > $(PROF_DIR)/mem_build_top.txt
+	go tool pprof -top $(PROF_DIR)/mem_lookup.prof > $(PROF_DIR)/mem_lookup_top.txt
+	bash ../../scripts/gen_flamegraphs.sh $(PROF_DIR) $(PLOT_DIR)
 
 clean:
 	rm -rf metrics

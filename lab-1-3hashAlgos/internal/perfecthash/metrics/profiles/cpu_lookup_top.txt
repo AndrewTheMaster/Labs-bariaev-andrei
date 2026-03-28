@@ -1,0 +1,52 @@
+File: perfecthash.test
+Build ID: b957437ffadc94bb1f41466a15c7958e26d6eacf
+Type: cpu
+Time: 2026-03-28 19:01:14 MSK
+Duration: 3.21s, Total samples = 3.14s (97.85%)
+Showing nodes accounting for 3.04s, 96.82% of 3.14s total
+Dropped 15 nodes (cum <= 0.02s)
+      flat  flat%   sum%        cum   cum%
+     0.98s 31.21% 31.21%      0.98s 31.21%  memeqbody
+     0.57s 18.15% 49.36%      2.50s 79.62%  runtime.mapaccess2_faststr
+     0.51s 16.24% 65.61%      0.51s 16.24%  internal/runtime/maps.ctrlGroup.matchH2 (inline)
+     0.37s 11.78% 77.39%      0.37s 11.78%  aeshashbody
+     0.26s  8.28% 85.67%      0.26s  8.28%  siaod-hw1/internal/perfecthash.BenchmarkPerfectHashLookup.func1.1.1
+     0.08s  2.55% 88.22%      0.08s  2.55%  internal/chacha8rand.block
+     0.07s  2.23% 90.45%      0.07s  2.23%  runtime.scanobject
+     0.04s  1.27% 91.72%      0.16s  5.10%  math/rand.(*Rand).int31n
+     0.02s  0.64% 92.36%      0.02s  0.64%  internal/runtime/maps.(*Map).directoryAt (inline)
+     0.02s  0.64% 92.99%      0.02s  0.64%  internal/runtime/maps.(*Map).directoryIndex (inline)
+     0.02s  0.64% 93.63%      0.02s  0.64%  internal/runtime/maps.(*ctrlGroup).setEmpty (inline)
+     0.02s  0.64% 94.27%      0.44s 14.01%  math/rand.(*Rand).Shuffle
+     0.02s  0.64% 94.90%      0.11s  3.50%  math/rand.(*runtimeSource).Int63
+     0.02s  0.64% 95.54%      0.18s  5.73%  siaod-hw1/internal/perfecthash.makeDataset
+     0.01s  0.32% 95.86%      0.12s  3.82%  math/rand.(*Rand).Int63 (inline)
+     0.01s  0.32% 96.18%      0.02s  0.64%  runtime.mallocgcSmallNoscan
+     0.01s  0.32% 96.50%      0.03s  0.96%  runtime.mapassign_faststr
+     0.01s  0.32% 96.82%      2.29s 72.93%  siaod-hw1/internal/perfecthash.(*Table).Lookup (inline)
+         0     0% 96.82%      0.08s  2.55%  internal/chacha8rand.(*State).Refill
+         0     0% 96.82%      0.02s  0.64%  internal/runtime/maps.(*table).reset
+         0     0% 96.82%      0.02s  0.64%  internal/runtime/maps.NewMap
+         0     0% 96.82%      0.02s  0.64%  internal/runtime/maps.newTable
+         0     0% 96.82%      0.12s  3.82%  math/rand.(*Rand).Uint32 (inline)
+         0     0% 96.82%      0.44s 14.01%  math/rand.Shuffle
+         0     0% 96.82%      0.02s  0.64%  runtime.findRunnable
+         0     0% 96.82%      0.07s  2.23%  runtime.gcBgMarkWorker
+         0     0% 96.82%      0.07s  2.23%  runtime.gcBgMarkWorker.func2
+         0     0% 96.82%      0.07s  2.23%  runtime.gcDrain
+         0     0% 96.82%      0.02s  0.64%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 96.82%      0.05s  1.59%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 96.82%      0.02s  0.64%  runtime.makemap
+         0     0% 96.82%      0.02s  0.64%  runtime.mallocgc
+         0     0% 96.82%      0.02s  0.64%  runtime.mcall
+         0     0% 96.82%      0.02s  0.64%  runtime.park_m
+         0     0% 96.82%      0.09s  2.87%  runtime.rand
+         0     0% 96.82%      0.02s  0.64%  runtime.schedule
+         0     0% 96.82%      0.02s  0.64%  runtime.slicebytetostring
+         0     0% 96.82%      0.07s  2.23%  runtime.systemstack
+         0     0% 96.82%      0.14s  4.46%  siaod-hw1/internal/perfecthash.(*Builder).Build (inline)
+         0     0% 96.82%      3.05s 97.13%  siaod-hw1/internal/perfecthash.BenchmarkPerfectHashLookup.func1
+         0     0% 96.82%      2.73s 86.94%  siaod-hw1/internal/perfecthash.BenchmarkPerfectHashLookup.func1.1
+         0     0% 96.82%      2.73s 86.94%  siaod-hw1/internal/perfecthash.runBatchBenchmark
+         0     0% 96.82%      3.05s 97.13%  testing.(*B).run1.func1
+         0     0% 96.82%      3.05s 97.13%  testing.(*B).runN

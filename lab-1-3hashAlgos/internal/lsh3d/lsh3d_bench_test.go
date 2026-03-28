@@ -1,4 +1,4 @@
-package lshtext
+package lsh3d
 
 import (
 	"fmt"
@@ -10,13 +10,13 @@ import (
 	"testing"
 )
 
-var defaultBenchmarkSizes = []int{500, 1000, 2500, 5000, 7500}
+var defaultBenchmarkSizes = []int{1000, 5000, 10000, 50000, 100000}
 
-// BenchmarkIndexBuild измеряет время построения индекса с нуля из N документов.
-func BenchmarkIndexBuild(b *testing.B) {
+// BenchmarkLSH3DBuild измеряет время построения индекса из N точек.
+func BenchmarkLSH3DBuild(b *testing.B) {
 	for _, size := range benchmarkSizes(b) {
 		b.Run(fmt.Sprintf("size=%d", size), func(b *testing.B) {
-			docs := randomDocuments(size)
+			pts := genPoints(size, 42)
 
 			runBatchBenchmark(b, size, func() {
 				b.StopTimer()
@@ -24,25 +24,22 @@ func BenchmarkIndexBuild(b *testing.B) {
 				if err != nil {
 					b.Fatalf("NewIndex: %v", err)
 				}
-				rand.Shuffle(len(docs), func(i, j int) { docs[i], docs[j] = docs[j], docs[i] })
+				rand.Shuffle(len(pts), func(i, j int) { pts[i], pts[j] = pts[j], pts[i] })
 				b.StartTimer()
 
-				for i, d := range docs {
-					if err := idx.Add(i, d); err != nil {
-						b.Fatalf("Add: %v", err)
-					}
+				for _, p := range pts {
+					idx.Add(p)
 				}
 			})
 		})
 	}
 }
 
-// BenchmarkIndexAdd измеряет скорость добавления N новых документов
-// в уже заполненный индекс из N документов.
-func BenchmarkIndexAdd(b *testing.B) {
+// BenchmarkLSH3DAdd измеряет скорость добавления N точек в уже заполненный индекс.
+func BenchmarkLSH3DAdd(b *testing.B) {
 	for _, size := range benchmarkSizes(b) {
 		b.Run(fmt.Sprintf("size=%d", size), func(b *testing.B) {
-			baseDocs := randomDocuments(size)
+			base := genPoints(size, 42)
 
 			runBatchBenchmark(b, size, func() {
 				b.StopTimer()
@@ -50,30 +47,28 @@ func BenchmarkIndexAdd(b *testing.B) {
 				if err != nil {
 					b.Fatalf("NewIndex: %v", err)
 				}
-				for i, d := range baseDocs {
-					if err := idx.Add(i, d); err != nil {
-						b.Fatalf("Build Add: %v", err)
-					}
+				for _, p := range base {
+					idx.Add(p)
 				}
-				docsForInsert := randomDocuments(size)
+				newPts := genPoints(size, 999)
+				for i := range newPts {
+					newPts[i].ID += size
+				}
 				b.StartTimer()
 
-				for i, d := range docsForInsert {
-					if err := idx.Add(size+i, d); err != nil {
-						b.Fatalf("Add: %v", err)
-					}
+				for _, p := range newPts {
+					idx.Add(p)
 				}
 			})
 		})
 	}
 }
 
-// BenchmarkIndexFullScan измеряет скорость полного сканирования индекса
-// для поиска дублей N запросных документов.
-func BenchmarkIndexFullScan(b *testing.B) {
+// BenchmarkLSH3DQuery измеряет скорость поиска ближайших дублей для N точек.
+func BenchmarkLSH3DQuery(b *testing.B) {
 	for _, size := range benchmarkSizes(b) {
 		b.Run(fmt.Sprintf("size=%d", size), func(b *testing.B) {
-			baseDocs := randomDocuments(size)
+			base := genPoints(size, 42)
 
 			runBatchBenchmark(b, size, func() {
 				b.StopTimer()
@@ -81,28 +76,41 @@ func BenchmarkIndexFullScan(b *testing.B) {
 				if err != nil {
 					b.Fatalf("NewIndex: %v", err)
 				}
-				for i, d := range baseDocs {
-					if err := idx.Add(i, d); err != nil {
-						b.Fatalf("Build Add: %v", err)
-					}
+				for _, p := range base {
+					idx.Add(p)
+				}
+				queries := genPoints(size, 7777)
+				b.StartTimer()
+
+				total := 0
+				for _, q := range queries {
+					total += len(idx.Query(q))
+				}
+				_ = total
+			})
+		})
+	}
+}
+
+// BenchmarkLSH3DFullScan измеряет скорость полного сканирования индекса из N точек.
+func BenchmarkLSH3DFullScan(b *testing.B) {
+	for _, size := range benchmarkSizes(b) {
+		b.Run(fmt.Sprintf("size=%d", size), func(b *testing.B) {
+			base := genPoints(size, 42)
+
+			runBatchBenchmark(b, size, func() {
+				b.StopTimer()
+				idx, err := NewIndex(DefaultConfig())
+				if err != nil {
+					b.Fatalf("NewIndex: %v", err)
+				}
+				for _, p := range base {
+					idx.Add(p)
 				}
 				b.StartTimer()
 
-				totalMatches := 0
-				for _, doc := range baseDocs {
-					cands, err := idx.Query(doc)
-					if err != nil {
-						b.Fatalf("Query: %v", err)
-					}
-					count := 0
-					for _, c := range cands {
-						if c.Similarity >= 0.5 {
-							count++
-						}
-					}
-					totalMatches += count
-				}
-				_ = totalMatches
+				pairs := idx.FullScanDuplicates(DefaultConfig().BandWidth)
+				_ = pairs
 			})
 		})
 	}

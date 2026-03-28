@@ -1,0 +1,68 @@
+File: hashfs.test
+Build ID: 6e1a6eb78262a530bf33065cba5ed0ae517361b8
+Type: cpu
+Time: 2026-03-28 19:00:59 MSK
+Duration: 4.22s, Total samples = 4.24s (100.55%)
+Showing nodes accounting for 3.85s, 90.80% of 4.24s total
+Dropped 100 nodes (cum <= 0.02s)
+      flat  flat%   sum%        cum   cum%
+     2.19s 51.65% 51.65%      2.19s 51.65%  internal/runtime/syscall.Syscall6
+     0.40s  9.43% 61.08%      0.40s  9.43%  hash/fnv.(*sum64a).Write (inline)
+     0.33s  7.78% 68.87%      2.26s 53.30%  siaod-hw1/internal/hashfs.(*store).Get
+     0.22s  5.19% 74.06%      1.44s 33.96%  siaod-hw1/internal/hashfs.(*store).Put
+     0.13s  3.07% 77.12%      0.17s  4.01%  siaod-hw1/internal/hashfs.(*store).Reset
+     0.07s  1.65% 78.77%      0.14s  3.30%  runtime.scanobject
+     0.04s  0.94% 79.72%      0.04s  0.94%  runtime.futex
+     0.04s  0.94% 80.66%      0.04s  0.94%  runtime.memmove
+     0.04s  0.94% 81.60%      1.04s 24.53%  siaod-hw1/internal/hashfs.(*store).appendRecord
+     0.04s  0.94% 82.55%      0.04s  0.94%  siaod-hw1/internal/hashfs.(*store).setBucketHead (inline)
+     0.04s  0.94% 83.49%      3.79s 89.39%  siaod-hw1/internal/hashfs.BenchmarkStoreGet.func1.2
+     0.03s  0.71% 84.20%      0.96s 22.64%  internal/poll.(*FD).Pwrite
+     0.03s  0.71% 84.91%      0.11s  2.59%  runtime.exitsyscall
+     0.03s  0.71% 85.61%      2.21s 52.12%  syscall.RawSyscall6
+     0.02s  0.47% 86.08%      1.54s 36.32%  internal/poll.(*FD).Pread
+     0.02s  0.47% 86.56%      1.57s 37.03%  os.(*File).ReadAt
+     0.02s  0.47% 87.03%      0.05s  1.18%  runtime.exitsyscallfast
+     0.02s  0.47% 87.50%      0.11s  2.59%  runtime.mallocgc
+     0.02s  0.47% 87.97%      0.06s  1.42%  runtime.reentersyscall
+     0.02s  0.47% 88.44%      0.04s  0.94%  runtime.typePointers.next
+     0.02s  0.47% 88.92%      1.49s 35.14%  syscall.Pread (inline)
+     0.02s  0.47% 89.39%      2.39s 56.37%  syscall.Syscall6
+     0.01s  0.24% 89.62%      1.55s 36.56%  os.(*File).pread (inline)
+     0.01s  0.24% 89.86%      0.03s  0.71%  runtime.casgstatus
+     0.01s  0.24% 90.09%      0.12s  2.83%  runtime.makeslice
+     0.01s  0.24% 90.33%      0.09s  2.12%  runtime.mallocgcSmallNoscan
+     0.01s  0.24% 90.57%      0.89s 20.99%  siaod-hw1/internal/hashfs.(*store).readRecord
+     0.01s  0.24% 90.80%      1.47s 34.67%  syscall.pread
+         0     0% 90.80%      1.49s 35.14%  internal/poll.(*FD).Pread.func1 (inline)
+         0     0% 90.80%      1.49s 35.14%  internal/poll.ignoringEINTR2[go.shape.int] (inline)
+         0     0% 90.80%      0.96s 22.64%  os.(*File).WriteAt
+         0     0% 90.80%      0.96s 22.64%  os.(*File).pwrite (inline)
+         0     0% 90.80%      0.03s  0.71%  runtime.bgsweep
+         0     0% 90.80%      0.07s  1.65%  runtime.entersyscall
+         0     0% 90.80%      0.03s  0.71%  runtime.findRunnable
+         0     0% 90.80%      0.04s  0.94%  runtime.futexsleep
+         0     0% 90.80%      0.16s  3.77%  runtime.gcBgMarkWorker
+         0     0% 90.80%      0.14s  3.30%  runtime.gcBgMarkWorker.func2
+         0     0% 90.80%      0.14s  3.30%  runtime.gcDrain
+         0     0% 90.80%      0.14s  3.30%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 90.80%      0.03s  0.71%  runtime.mPark (inline)
+         0     0% 90.80%      0.03s  0.71%  runtime.mProf_Malloc
+         0     0% 90.80%      0.03s  0.71%  runtime.makeslicecopy
+         0     0% 90.80%      0.03s  0.71%  runtime.mcall
+         0     0% 90.80%      0.03s  0.71%  runtime.notesleep
+         0     0% 90.80%      0.03s  0.71%  runtime.park_m
+         0     0% 90.80%      0.03s  0.71%  runtime.profilealloc
+         0     0% 90.80%      0.03s  0.71%  runtime.schedule
+         0     0% 90.80%      0.03s  0.71%  runtime.stopm
+         0     0% 90.80%      0.03s  0.71%  runtime.sweepone
+         0     0% 90.80%      0.22s  5.19%  runtime.systemstack
+         0     0% 90.80%      0.40s  9.43%  siaod-hw1/internal/hashfs.(*store).hashKey
+         0     0% 90.80%      0.79s 18.63%  siaod-hw1/internal/hashfs.(*store).readRecordHeader
+         0     0% 90.80%         4s 94.34%  siaod-hw1/internal/hashfs.BenchmarkStoreGet.func1
+         0     0% 90.80%      3.98s 93.87%  siaod-hw1/internal/hashfs.runBatchBenchmark
+         0     0% 90.80%      0.05s  1.18%  siaod-hw1/internal/hashfs.shuffleKeys
+         0     0% 90.80%      0.93s 21.93%  syscall.Pwrite (inline)
+         0     0% 90.80%      0.93s 21.93%  syscall.pwrite
+         0     0% 90.80%      4.02s 94.81%  testing.(*B).run1.func1
+         0     0% 90.80%      4.02s 94.81%  testing.(*B).runN
