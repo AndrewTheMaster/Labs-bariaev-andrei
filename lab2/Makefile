@@ -73,13 +73,7 @@ profile:
 	else \
 		echo "graphviz not found — install with: sudo dnf install graphviz"; \
 	fi
-	@for prof in cpu_findnearby cpu_insert mem_findnearby mem_insert; do \
-		go tool pprof -http=:8082 $(PROF_DIR)/$${prof}.prof & \
-		PPID=$$!; sleep 2; \
-		curl -s "http://localhost:8082/ui/flamegraph" -o $(PLOT_DIR)/flamegraph_$${prof}.html; \
-		kill $$PPID 2>/dev/null; sleep 1; \
-		echo "flamegraph saved: $(PLOT_DIR)/flamegraph_$${prof}.html"; \
-	done
+	bash scripts/gen_flamegraphs.sh $(PROF_DIR) $(PLOT_DIR)
 
 clean:
 	rm -rf metrics
