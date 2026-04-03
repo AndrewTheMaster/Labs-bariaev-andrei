@@ -2,6 +2,7 @@ SIZES        ?= 1000,5000,10000,50000,100000
 METRICS_OUT  ?= metrics
 FUZZ_TIME    ?= 15s
 BENCH_FILTER ?= ^BenchmarkLSH3D
+BENCH_TIME   ?= 20x
 RAW_DIR      := $(METRICS_OUT)/raw
 PLOT_DIR     := $(METRICS_OUT)/plots
 PROF_DIR     := $(METRICS_OUT)/profiles
@@ -15,11 +16,11 @@ fuzz:
 	go test -run '$$^' -fuzz '^FuzzIndexNoPanic$$' -fuzztime $(FUZZ_TIME) .
 
 bench:
-	SIZES='$(SIZES)' go test -run '$$^' -bench '$(BENCH_FILTER)' -benchmem .
+	SIZES='$(SIZES)' go test -run '$$^' -bench '$(BENCH_FILTER)' -benchmem -benchtime $(BENCH_TIME) .
 
 collect:
 	mkdir -p $(RAW_DIR) $(PLOT_DIR)
-	SIZES='$(SIZES)' go test -run '$$^' -bench '$(BENCH_FILTER)' -benchmem . > $(RAW_DIR)/benchmarks.txt
+	SIZES='$(SIZES)' go test -run '$$^' -bench '$(BENCH_FILTER)' -benchmem -benchtime $(BENCH_TIME) . > $(RAW_DIR)/benchmarks.txt
 	awk 'BEGIN { OFS=","; print "operation,size,iterations,ns_per_op,ns_per_item,ci95_ns_per_item,ops_per_sec,bytes_per_op,allocs_per_op" } \
 	/^BenchmarkLSH3D(Build|Add|Query|FullScan)\/size=[0-9]+-[0-9]+/ { \
 	  name=$$1; iters=$$2; \
@@ -45,9 +46,11 @@ plot:
 profile:
 	mkdir -p $(PROF_DIR) $(PLOT_DIR)
 	SIZES='10000,100000' go test -run '$$^' -bench '^BenchmarkLSH3DBuild$$' -benchmem \
+		-benchtime $(BENCH_TIME) \
 		-cpuprofile $(PROF_DIR)/cpu_build.prof \
 		-memprofile $(PROF_DIR)/mem_build.prof . > /dev/null
 	SIZES='10000,100000' go test -run '$$^' -bench '^BenchmarkLSH3DQuery$$' -benchmem \
+		-benchtime $(BENCH_TIME) \
 		-cpuprofile $(PROF_DIR)/cpu_query.prof \
 		-memprofile $(PROF_DIR)/mem_query.prof . > /dev/null
 	go tool pprof -top $(PROF_DIR)/cpu_build.prof  > $(PROF_DIR)/cpu_build_top.txt

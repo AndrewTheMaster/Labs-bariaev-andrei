@@ -2,25 +2,25 @@ goos: linux
 goarch: amd64
 pkg: siaod-hw1/internal/lsh3d
 cpu: AMD Eng Sample: 100-000000829-50_Y             
-BenchmarkLSH3DBuild/size=1000-16         	     952	   1350333 ns/op	        25.83 ci95_ns/item	      1350 ns/item	    740558 ops/s	 1573217 B/op	   10182 allocs/op
-BenchmarkLSH3DBuild/size=5000-16         	     151	   8057283 ns/op	        37.10 ci95_ns/item	      1611 ns/item	    620557 ops/s	 7363086 B/op	   48447 allocs/op
-BenchmarkLSH3DBuild/size=10000-16        	      73	  20634871 ns/op	        96.93 ci95_ns/item	      2063 ns/item	    484617 ops/s	14056143 B/op	   89267 allocs/op
-BenchmarkLSH3DBuild/size=50000-16        	       7	 145419626 ns/op	       535.3 ci95_ns/item	      2908 ns/item	    343833 ops/s	58169600 B/op	  268966 allocs/op
-BenchmarkLSH3DBuild/size=100000-16       	       4	 256851211 ns/op	       132.1 ci95_ns/item	      2569 ns/item	    389330 ops/s	111960160 B/op	  378295 allocs/op
-BenchmarkLSH3DAdd/size=1000-16           	    1294	   1019986 ns/op	        11.65 ci95_ns/item	      1020 ns/item	    980406 ops/s	 1531983 B/op	    9945 allocs/op
-BenchmarkLSH3DAdd/size=5000-16           	     100	  10290806 ns/op	        66.16 ci95_ns/item	      2058 ns/item	    485871 ops/s	 6672678 B/op	   40811 allocs/op
-BenchmarkLSH3DAdd/size=10000-16          	      46	  25091447 ns/op	        73.68 ci95_ns/item	      2509 ns/item	    398542 ops/s	10829967 B/op	   62241 allocs/op
-BenchmarkLSH3DAdd/size=50000-16          	       8	 127921546 ns/op	       188.2 ci95_ns/item	      2558 ns/item	    390865 ops/s	53959666 B/op	  109735 allocs/op
-BenchmarkLSH3DAdd/size=100000-16         	       5	 243609120 ns/op	        88.59 ci95_ns/item	      2436 ns/item	    410494 ops/s	109592256 B/op	  112631 allocs/op
-BenchmarkLSH3DQuery/size=1000-16         	    2428	    472291 ns/op	         5.540 ci95_ns/item	       472.3 ns/item	   2117339 ops/s	   56688 B/op	    1746 allocs/op
-BenchmarkLSH3DQuery/size=5000-16         	     144	   8349663 ns/op	        39.91 ci95_ns/item	      1670 ns/item	    598827 ops/s	 3279957 B/op	   32440 allocs/op
-BenchmarkLSH3DQuery/size=10000-16        	      27	  46452346 ns/op	       181.6 ci95_ns/item	      4645 ns/item	    215274 ops/s	16967240 B/op	  101294 allocs/op
-BenchmarkLSH3DQuery/size=50000-16        	       2	 953133958 ns/op	       366.6 ci95_ns/item	     19063 ns/item	     52459 ops/s	496136024 B/op	  868656 allocs/op
-BenchmarkLSH3DQuery/size=100000-16       	       1	3204762622 ns/op	         0 ci95_ns/item	     32048 ns/item	     31204 ops/s	2027110944 B/op	 2039998 allocs/op
-BenchmarkLSH3DFullScan/size=1000-16      	    4848	    232547 ns/op	         2.901 ci95_ns/item	       232.5 ns/item	   4300206 ops/s	  120794 B/op	      29 allocs/op
-BenchmarkLSH3DFullScan/size=5000-16      	     253	   4557900 ns/op	        21.96 ci95_ns/item	       911.6 ns/item	   1096996 ops/s	 2176814 B/op	     160 allocs/op
-BenchmarkLSH3DFullScan/size=10000-16     	      45	  26185570 ns/op	        83.72 ci95_ns/item	      2619 ns/item	    381890 ops/s	 8934820 B/op	     551 allocs/op
-BenchmarkLSH3DFullScan/size=50000-16     	       1	1790607046 ns/op	         0 ci95_ns/item	     35812 ns/item	     27923 ops/s	279535264 B/op	   16442 allocs/op
-BenchmarkLSH3DFullScan/size=100000-16    	       1	8871939860 ns/op	         0 ci95_ns/item	     88719 ns/item	     11271 ops/s	1110499072 B/op	   65603 allocs/op
+BenchmarkLSH3DBuild/size=1000-16         	      20	   1289865 ns/op	       106.1 ci95_ns/item	      1290 ns/item	    775275 ops/s	 1573440 B/op	   10182 allocs/op
+BenchmarkLSH3DBuild/size=5000-16         	      20	   8052241 ns/op	        76.64 ci95_ns/item	      1610 ns/item	    620945 ops/s	 7363571 B/op	   48447 allocs/op
+BenchmarkLSH3DBuild/size=10000-16        	      20	  16506777 ns/op	        91.52 ci95_ns/item	      1651 ns/item	    605812 ops/s	14067100 B/op	   89268 allocs/op
+BenchmarkLSH3DBuild/size=50000-16        	      20	  89197392 ns/op	       223.9 ci95_ns/item	      1784 ns/item	    560555 ops/s	58166399 B/op	  268964 allocs/op
+BenchmarkLSH3DBuild/size=100000-16       	      20	 140204868 ns/op	        31.40 ci95_ns/item	      1402 ns/item	    713242 ops/s	111964452 B/op	  378295 allocs/op
+BenchmarkLSH3DAdd/size=1000-16           	      20	   1131184 ns/op	       114.3 ci95_ns/item	      1131 ns/item	    884029 ops/s	 1533043 B/op	    9945 allocs/op
+BenchmarkLSH3DAdd/size=5000-16           	      20	   7734586 ns/op	        70.37 ci95_ns/item	      1547 ns/item	    646447 ops/s	 6685787 B/op	   40812 allocs/op
+BenchmarkLSH3DAdd/size=10000-16          	      20	  14932271 ns/op	        63.14 ci95_ns/item	      1493 ns/item	    669690 ops/s	10895635 B/op	   62244 allocs/op
+BenchmarkLSH3DAdd/size=50000-16          	      20	  69358268 ns/op	        36.43 ci95_ns/item	      1387 ns/item	    720895 ops/s	53875542 B/op	  109730 allocs/op
+BenchmarkLSH3DAdd/size=100000-16         	      20	 138384374 ns/op	       102.4 ci95_ns/item	      1384 ns/item	    722625 ops/s	109480404 B/op	  112624 allocs/op
+BenchmarkLSH3DQuery/size=1000-16         	      20	    469834 ns/op	        11.61 ci95_ns/item	       469.8 ns/item	   2128410 ops/s	   56664 B/op	    1746 allocs/op
+BenchmarkLSH3DQuery/size=5000-16         	      20	   7542102 ns/op	        50.86 ci95_ns/item	      1508 ns/item	    662945 ops/s	 3279940 B/op	   32440 allocs/op
+BenchmarkLSH3DQuery/size=10000-16        	      20	  30954339 ns/op	        74.00 ci95_ns/item	      3095 ns/item	    323056 ops/s	16967244 B/op	  101294 allocs/op
+BenchmarkLSH3DQuery/size=50000-16        	      20	 603864394 ns/op	       531.2 ci95_ns/item	     12077 ns/item	     82800 ops/s	496136033 B/op	  868656 allocs/op
+BenchmarkLSH3DQuery/size=100000-16       	      20	1964632770 ns/op	        89.89 ci95_ns/item	     19646 ns/item	     50900 ops/s	2027110963 B/op	 2039998 allocs/op
+BenchmarkLSH3DFullScan/size=1000-16      	      20	    287186 ns/op	        63.93 ci95_ns/item	       287.2 ns/item	   3482068 ops/s	  120768 B/op	      29 allocs/op
+BenchmarkLSH3DFullScan/size=5000-16      	      20	   4517136 ns/op	        49.06 ci95_ns/item	       903.4 ns/item	   1106896 ops/s	 2176800 B/op	     160 allocs/op
+BenchmarkLSH3DFullScan/size=10000-16     	      20	  18472018 ns/op	        71.32 ci95_ns/item	      1847 ns/item	    541359 ops/s	 8934816 B/op	     551 allocs/op
+BenchmarkLSH3DFullScan/size=50000-16     	      20	 895684397 ns/op	       149.3 ci95_ns/item	     17914 ns/item	     55823 ops/s	279535298 B/op	   16442 allocs/op
+BenchmarkLSH3DFullScan/size=100000-16    	      20	4410187307 ns/op	       880.9 ci95_ns/item	     44102 ns/item	     22675 ops/s	1110499052 B/op	   65602 allocs/op
 PASS
-ok  	siaod-hw1/internal/lsh3d	55.997s
+ok  	siaod-hw1/internal/lsh3d	182.809s

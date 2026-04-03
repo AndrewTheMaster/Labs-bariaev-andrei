@@ -2,17 +2,17 @@ goos: linux
 goarch: amd64
 pkg: siaod-hw1/internal/perfecthash
 cpu: AMD Eng Sample: 100-000000829-50_Y             
-BenchmarkPerfectHashBuild/size=20000-16         	     768	   1779298 ns/op	         2.889 ci95_ns/item	        88.96 ns/item	  11240389 ops/s	 1193789 B/op	   20065 allocs/op
-BenchmarkPerfectHashBuild/size=50000-16         	     278	   4346718 ns/op	         2.072 ci95_ns/item	        86.93 ns/item	  11502931 ops/s	 2547526 B/op	   50129 allocs/op
-BenchmarkPerfectHashBuild/size=100000-16        	     106	  11141460 ns/op	         3.651 ci95_ns/item	       111.4 ns/item	   8975484 ops/s	 5095160 B/op	  100257 allocs/op
-BenchmarkPerfectHashBuild/size=250000-16        	      15	  69694922 ns/op	         8.531 ci95_ns/item	       278.8 ns/item	   3587062 ops/s	17980428 B/op	  251025 allocs/op
-BenchmarkPerfectHashBuild/size=500000-16        	       7	 163686192 ns/op	         5.715 ci95_ns/item	       327.4 ns/item	   3054625 ops/s	35960589 B/op	  502049 allocs/op
-BenchmarkPerfectHashBuild/size=1000000-16       	       3	 363739959 ns/op	        11.93 ci95_ns/item	       363.7 ns/item	   2749217 ops/s	71920640 B/op	 1004097 allocs/op
-BenchmarkPerfectHashLookup/size=20000-16        	    2820	    432811 ns/op	         0.07141 ci95_ns/item	        21.64 ns/item	  46209549 ops/s	      30 B/op	       0 allocs/op
-BenchmarkPerfectHashLookup/size=50000-16        	     925	   1331589 ns/op	         0.2559 ci95_ns/item	        26.63 ns/item	  37549110 ops/s	      26 B/op	       0 allocs/op
-BenchmarkPerfectHashLookup/size=100000-16       	     300	   3679492 ns/op	         2.112 ci95_ns/item	        36.79 ns/item	  27177663 ops/s	      23 B/op	       0 allocs/op
-BenchmarkPerfectHashLookup/size=250000-16       	      38	  32554520 ns/op	         2.296 ci95_ns/item	       130.2 ns/item	   7679425 ops/s	       0 B/op	       0 allocs/op
-BenchmarkPerfectHashLookup/size=500000-16       	      14	  81623996 ns/op	         1.258 ci95_ns/item	       163.2 ns/item	   6125650 ops/s	       0 B/op	       0 allocs/op
-BenchmarkPerfectHashLookup/size=1000000-16      	       6	 181857092 ns/op	         2.209 ci95_ns/item	       181.9 ns/item	   5498823 ops/s	       0 B/op	       0 allocs/op
+BenchmarkPerfectHashBuild/size=20000-16         	      20	   1931820 ns/op	        12.12 ci95_ns/item	        96.59 ns/item	  10352929 ops/s	 1193753 B/op	   20065 allocs/op
+BenchmarkPerfectHashBuild/size=50000-16         	      20	   6294248 ns/op	        23.26 ci95_ns/item	       125.9 ns/item	   7943761 ops/s	 2548252 B/op	   50129 allocs/op
+BenchmarkPerfectHashBuild/size=100000-16        	      20	  22039625 ns/op	        31.10 ci95_ns/item	       220.4 ns/item	   4537282 ops/s	 5095056 B/op	  100257 allocs/op
+BenchmarkPerfectHashBuild/size=250000-16        	      20	  69880188 ns/op	        20.91 ci95_ns/item	       279.5 ns/item	   3577552 ops/s	17980416 B/op	  251025 allocs/op
+BenchmarkPerfectHashBuild/size=500000-16        	      20	 161481460 ns/op	         3.309 ci95_ns/item	       323.0 ns/item	   3096331 ops/s	35960586 B/op	  502049 allocs/op
+BenchmarkPerfectHashBuild/size=1000000-16       	      20	 365380766 ns/op	         6.231 ci95_ns/item	       365.4 ns/item	   2736871 ops/s	71920641 B/op	 1004097 allocs/op
+BenchmarkPerfectHashLookup/size=20000-16        	      20	    405647 ns/op	         0.4571 ci95_ns/item	        20.28 ns/item	  49303909 ops/s	       0 B/op	       0 allocs/op
+BenchmarkPerfectHashLookup/size=50000-16        	      20	   1492732 ns/op	         1.944 ci95_ns/item	        29.85 ns/item	  33495641 ops/s	       0 B/op	       0 allocs/op
+BenchmarkPerfectHashLookup/size=100000-16       	      20	   3596666 ns/op	         3.482 ci95_ns/item	        35.97 ns/item	  27803524 ops/s	       0 B/op	       0 allocs/op
+BenchmarkPerfectHashLookup/size=250000-16       	      20	  31673766 ns/op	         2.389 ci95_ns/item	       126.7 ns/item	   7892967 ops/s	       0 B/op	       0 allocs/op
+BenchmarkPerfectHashLookup/size=500000-16       	      20	  81926139 ns/op	         1.769 ci95_ns/item	       163.9 ns/item	   6103058 ops/s	       0 B/op	       0 allocs/op
+BenchmarkPerfectHashLookup/size=1000000-16      	      20	 179416202 ns/op	         0.9209 ci95_ns/item	       179.4 ns/item	   5573633 ops/s	       0 B/op	       0 allocs/op
 PASS
-ok  	siaod-hw1/internal/perfecthash	18.355s
+ok  	siaod-hw1/internal/perfecthash	22.274s

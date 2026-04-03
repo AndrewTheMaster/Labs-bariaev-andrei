@@ -1,13 +1,13 @@
 File: lsh3d.test
-Build ID: 0cbe8151a165aaecf71ebdb0a6c58c5bf4f8397e
+Build ID: 07c276d30338ce35c13bb1e3921477e71cd3e8e4
 Type: alloc_space
-Time: 2026-03-28 19:17:04 MSK
-Showing nodes accounting for 1.14GB, 99.00% of 1.15GB total
-Dropped 31 nodes (cum <= 0.01GB)
+Time: 2026-04-03 17:43:20 MSK
+Showing nodes accounting for 2.30GB, 99.49% of 2.31GB total
+Dropped 28 nodes (cum <= 0.01GB)
       flat  flat%   sum%        cum   cum%
-    1.14GB 99.00% 99.00%     1.14GB 99.00%  siaod-hw1/internal/lsh3d.(*Index).Add
-         0     0% 99.00%     1.14GB 99.31%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DBuild.func1
-         0     0% 99.00%     1.14GB 99.05%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DBuild.func1.1
-         0     0% 99.00%     1.14GB 99.05%  siaod-hw1/internal/lsh3d.runBatchBenchmark
-         0     0% 99.00%     1.14GB 99.31%  testing.(*B).run1.func1
-         0     0% 99.00%     1.14GB 99.31%  testing.(*B).runN
+    2.30GB 99.49% 99.49%     2.30GB 99.49%  siaod-hw1/internal/lsh3d.(*Index).Add
+         0     0% 99.49%     2.30GB 99.62%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DBuild.func1
+         0     0% 99.49%     2.30GB 99.49%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DBuild.func1.1
+         0     0% 99.49%     2.30GB 99.49%  siaod-hw1/internal/lsh3d.runBatchBenchmark
+         0     0% 99.49%     2.30GB 99.64%  testing.(*B).run1.func1
+         0     0% 99.49%     2.30GB 99.64%  testing.(*B).runN

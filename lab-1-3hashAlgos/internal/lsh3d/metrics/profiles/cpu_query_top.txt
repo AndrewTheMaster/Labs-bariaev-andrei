@@ -1,88 +1,74 @@
 File: lsh3d.test
-Build ID: 0cbe8151a165aaecf71ebdb0a6c58c5bf4f8397e
+Build ID: 07c276d30338ce35c13bb1e3921477e71cd3e8e4
 Type: cpu
-Time: 2026-03-28 19:17:04 MSK
-Duration: 5.12s, Total samples = 5.68s (111.03%)
-Showing nodes accounting for 5.20s, 91.55% of 5.68s total
-Dropped 112 nodes (cum <= 0.03s)
+Time: 2026-04-03 17:43:20 MSK
+Duration: 68.70s, Total samples = 79.11s (115.15%)
+Showing nodes accounting for 72.19s, 91.25% of 79.11s total
+Dropped 263 nodes (cum <= 0.40s)
       flat  flat%   sum%        cum   cum%
-     1.19s 20.95% 20.95%      4.31s 75.88%  siaod-hw1/internal/lsh3d.(*Index).Query
-     0.47s  8.27% 29.23%      0.47s  8.27%  runtime.memclrNoHeapPointers
-     0.42s  7.39% 36.62%      0.42s  7.39%  internal/runtime/maps.h2 (inline)
-     0.30s  5.28% 41.90%      0.77s 13.56%  runtime.mapaccess1_fast64
-     0.30s  5.28% 47.18%      0.30s  5.28%  runtime.memmove
-     0.24s  4.23% 51.41%      0.57s 10.04%  runtime.mapaccess2_fast64
-     0.20s  3.52% 54.93%      1.54s 27.11%  runtime.mapassign_fast64
-     0.19s  3.35% 58.27%      0.19s  3.35%  internal/runtime/maps.ctrlGroup.matchH2 (inline)
-     0.14s  2.46% 60.74%      0.14s  2.46%  runtime.memhash64
-     0.13s  2.29% 63.03%      0.15s  2.64%  runtime.findObject
-     0.13s  2.29% 65.32%      0.42s  7.39%  runtime.scanobject
-     0.12s  2.11% 67.43%      0.45s  7.92%  internal/runtime/maps.(*table).uncheckedPutSlot
-     0.11s  1.94% 69.37%      0.11s  1.94%  internal/runtime/maps.ctrlGroup.matchEmptyOrDeleted (inline)
-     0.08s  1.41% 70.77%      0.08s  1.41%  runtime.(*mspan).init
-     0.08s  1.41% 72.18%      0.62s 10.92%  siaod-hw1/internal/lsh3d.(*Index).Add
-     0.07s  1.23% 73.42%      0.07s  1.23%  internal/runtime/maps.probeSeq.next (inline)
-     0.07s  1.23% 74.65%      0.68s 11.97%  runtime.mallocgcSmallNoscan
-     0.07s  1.23% 75.88%      0.11s  1.94%  runtime.typedmemmove
-     0.06s  1.06% 76.94%      0.06s  1.06%  internal/runtime/maps.(*groupReference).elem (inline)
-     0.06s  1.06% 77.99%      0.06s  1.06%  internal/runtime/maps.(*groupsReference).group (inline)
-     0.06s  1.06% 79.05%      0.92s 16.20%  internal/runtime/maps.(*table).grow
-     0.06s  1.06% 80.11%      0.06s  1.06%  runtime.(*mspan).base (inline)
-     0.06s  1.06% 81.16%      0.06s  1.06%  runtime.nextFreeFast (inline)
-     0.05s  0.88% 82.04%      0.05s  0.88%  internal/runtime/maps.(*groupReference).key (inline)
-     0.05s  0.88% 82.92%      0.05s  0.88%  siaod-hw1/internal/lsh3d.(*Index).compoundKey (inline)
-     0.04s   0.7% 83.63%      0.21s  3.70%  internal/runtime/maps.(*Map).growToTable
-     0.04s   0.7% 84.33%      0.04s   0.7%  internal/runtime/maps.ctrlGroup.matchEmpty (inline)
-     0.04s   0.7% 85.04%      0.04s   0.7%  internal/runtime/maps.h1 (inline)
-     0.04s   0.7% 85.74%      0.77s 13.56%  runtime.mallocgc
-     0.03s  0.53% 86.27%      0.14s  2.46%  internal/runtime/maps.typedmemmove
-     0.03s  0.53% 86.80%      0.04s   0.7%  runtime.(*fixalloc).alloc
-     0.03s  0.53% 87.32%      0.03s  0.53%  runtime.(*gcBits).bitp (inline)
-     0.03s  0.53% 87.85%      0.08s  1.41%  runtime.(*sweepLocked).sweep
-     0.03s  0.53% 88.38%      0.03s  0.53%  runtime.(*sysMemStat).add
-     0.03s  0.53% 88.91%      0.03s  0.53%  runtime.procyield
-     0.03s  0.53% 89.44%      0.13s  2.29%  runtime.sweepone
-     0.02s  0.35% 89.79%      0.21s  3.70%  runtime.(*mcentral).cacheSpan
-     0.02s  0.35% 90.14%      0.12s  2.11%  runtime.greyobject
-     0.02s  0.35% 90.49%      0.71s 12.50%  runtime.growslice
-     0.02s  0.35% 90.85%      0.03s  0.53%  runtime.markrootSpans
-     0.01s  0.18% 91.02%      0.52s  9.15%  internal/runtime/maps.(*table).reset
-     0.01s  0.18% 91.20%      0.53s  9.33%  internal/runtime/maps.newTable
-     0.01s  0.18% 91.37%      0.10s  1.76%  runtime.(*mheap).initSpan
-     0.01s  0.18% 91.55%      4.94s 86.97%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DQuery.func1.1
-         0     0% 91.55%      0.95s 16.73%  internal/runtime/maps.(*table).rehash
-         0     0% 91.55%      0.03s  0.53%  internal/runtime/maps.(*table).split
-         0     0% 91.55%      0.50s  8.80%  internal/runtime/maps.newGroups (inline)
-         0     0% 91.55%      0.50s  8.80%  internal/runtime/maps.newarray
-         0     0% 91.55%      0.22s  3.87%  runtime.(*mcache).nextFree
-         0     0% 91.55%      0.22s  3.87%  runtime.(*mcache).refill
-         0     0% 91.55%      0.16s  2.82%  runtime.(*mcentral).grow
-         0     0% 91.55%      0.16s  2.82%  runtime.(*mheap).alloc
-         0     0% 91.55%      0.16s  2.82%  runtime.(*mheap).alloc.func1
-         0     0% 91.55%      0.04s   0.7%  runtime.(*mheap).allocMSpanLocked
-         0     0% 91.55%      0.16s  2.82%  runtime.(*mheap).allocSpan
-         0     0% 91.55%      0.03s  0.53%  runtime.(*mheap).freeSpan (inline)
-         0     0% 91.55%      0.03s  0.53%  runtime.(*mspan).markBitsForIndex (inline)
-         0     0% 91.55%      0.03s  0.53%  runtime.(*sweepLocked).sweep.(*mheap).freeSpan.func2
-         0     0% 91.55%      0.12s  2.11%  runtime.bgsweep
-         0     0% 91.55%      0.54s  9.51%  runtime.gcBgMarkWorker
-         0     0% 91.55%      0.50s  8.80%  runtime.gcBgMarkWorker.func2
-         0     0% 91.55%      0.50s  8.80%  runtime.gcDrain
-         0     0% 91.55%      0.44s  7.75%  runtime.gcDrainMarkWorkerDedicated (inline)
-         0     0% 91.55%      0.06s  1.06%  runtime.gcDrainMarkWorkerIdle (inline)
-         0     0% 91.55%      0.04s   0.7%  runtime.gcMarkDone
-         0     0% 91.55%      0.04s   0.7%  runtime.gcMarkTermination
-         0     0% 91.55%      0.03s  0.53%  runtime.mallocgcLarge
-         0     0% 91.55%      0.08s  1.41%  runtime.markroot
-         0     0% 91.55%      0.04s   0.7%  runtime.markroot.func1
-         0     0% 91.55%      0.04s   0.7%  runtime.mcall
-         0     0% 91.55%      0.03s  0.53%  runtime.memclrNoHeapPointersChunked
-         0     0% 91.55%      0.50s  8.80%  runtime.newarray
-         0     0% 91.55%      0.04s   0.7%  runtime.park_m
-         0     0% 91.55%      0.03s  0.53%  runtime.scanstack
-         0     0% 91.55%      0.04s   0.7%  runtime.schedule
-         0     0% 91.55%      0.76s 13.38%  runtime.systemstack
-         0     0% 91.55%      4.94s 86.97%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DQuery.func1
-         0     0% 91.55%      4.94s 86.97%  siaod-hw1/internal/lsh3d.runBatchBenchmark
-         0     0% 91.55%      4.95s 87.15%  testing.(*B).run1.func1
-         0     0% 91.55%      4.95s 87.15%  testing.(*B).runN
+    18.98s 23.99% 23.99%     62.53s 79.04%  siaod-hw1/internal/lsh3d.(*Index).Query
+     7.77s  9.82% 33.81%      7.77s  9.82%  runtime.memclrNoHeapPointers
+     5.20s  6.57% 40.39%      5.20s  6.57%  internal/runtime/maps.h2 (inline)
+     4.57s  5.78% 46.16%      4.57s  5.78%  runtime.memmove
+     4.11s  5.20% 51.36%      8.72s 11.02%  runtime.scanobject
+     3.61s  4.56% 55.92%      8.37s 10.58%  runtime.mapaccess1_fast64
+     3.03s  3.83% 59.75%     22.80s 28.82%  runtime.mapassign_fast64
+     2.92s  3.69% 63.44%      6.44s  8.14%  runtime.mapaccess2_fast64
+     2.61s  3.30% 66.74%      2.78s  3.51%  runtime.findObject
+     2.36s  2.98% 69.73%      2.36s  2.98%  runtime.memhash64
+     1.59s  2.01% 71.74%      1.59s  2.01%  internal/runtime/maps.ctrlGroup.matchH2 (inline)
+     1.55s  1.96% 73.69%      1.55s  1.96%  internal/runtime/maps.ctrlGroup.matchEmptyOrDeleted (inline)
+     1.27s  1.61% 75.30%      5.69s  7.19%  internal/runtime/maps.(*table).uncheckedPutSlot
+     0.88s  1.11% 76.41%      0.88s  1.11%  runtime.(*gcBits).bitp (inline)
+     0.85s  1.07% 77.49%      0.85s  1.07%  internal/runtime/maps.(*groupReference).elem (inline)
+     0.83s  1.05% 78.54%      8.81s 11.14%  internal/runtime/maps.(*table).reset
+     0.77s  0.97% 79.51%      0.77s  0.97%  runtime.(*fixalloc).alloc
+     0.77s  0.97% 80.48%      2.02s  2.55%  runtime.sweepone
+     0.74s  0.94% 81.42%      0.74s  0.94%  runtime.(*mspan).init
+     0.63s   0.8% 82.21%     15.28s 19.31%  internal/runtime/maps.(*table).grow
+     0.63s   0.8% 83.01%      5.04s  6.37%  siaod-hw1/internal/lsh3d.(*Index).Add
+     0.57s  0.72% 83.73%      0.57s  0.72%  internal/runtime/maps.(*groupReference).key (inline)
+     0.56s  0.71% 84.44%      0.56s  0.71%  internal/runtime/maps.(*groupsReference).group (inline)
+     0.55s   0.7% 85.13%      0.55s   0.7%  internal/runtime/maps.ctrlGroup.matchFull (inline)
+     0.54s  0.68% 85.82%      0.54s  0.68%  siaod-hw1/internal/lsh3d.(*Index).compoundKey (inline)
+     0.53s  0.67% 86.49%     10.10s 12.77%  runtime.mallocgcSmallNoscan
+     0.50s  0.63% 87.12%      1.86s  2.35%  internal/runtime/maps.typedmemmove
+     0.45s  0.57% 87.69%      2.85s  3.60%  runtime.(*mcentral).cacheSpan
+     0.44s  0.56% 88.24%      0.44s  0.56%  internal/runtime/maps.(*ctrlGroup).get (inline)
+     0.42s  0.53% 88.78%      1.36s  1.72%  runtime.typedmemmove
+     0.33s  0.42% 89.19%      0.83s  1.05%  runtime.(*sweepLocked).sweep
+     0.33s  0.42% 89.61%      1.69s  2.14%  runtime.greyobject
+     0.30s  0.38% 89.99%     67.90s 85.83%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DQuery.func1.1
+     0.28s  0.35% 90.34%     11.40s 14.41%  runtime.mallocgc
+     0.26s  0.33% 90.67%      9.47s 11.97%  runtime.growslice
+     0.13s  0.16% 90.84%      1.03s  1.30%  runtime.(*mheap).initSpan
+     0.10s  0.13% 90.96%      3.33s  4.21%  runtime.(*mcache).refill
+     0.05s 0.063% 91.03%     11.82s 14.94%  runtime.systemstack
+     0.04s 0.051% 91.08%      0.98s  1.24%  internal/runtime/maps.(*Map).growToTable
+     0.03s 0.038% 91.11%      3.40s  4.30%  runtime.(*mcache).nextFree
+     0.02s 0.025% 91.14%         2s  2.53%  runtime.(*mheap).alloc.func1
+     0.02s 0.025% 91.16%      2.03s  2.57%  runtime.bgsweep
+     0.02s 0.025% 91.19%      0.64s  0.81%  runtime.deductAssistCredit
+     0.01s 0.013% 91.20%      9.08s 11.48%  internal/runtime/maps.newTable
+     0.01s 0.013% 91.21%      7.95s 10.05%  internal/runtime/maps.newarray
+     0.01s 0.013% 91.23%      2.03s  2.57%  runtime.(*mcentral).grow
+     0.01s 0.013% 91.24%      1.98s  2.50%  runtime.(*mheap).allocSpan
+     0.01s 0.013% 91.25%      7.94s 10.04%  runtime.newarray
+         0     0% 91.25%     15.48s 19.57%  internal/runtime/maps.(*table).rehash
+         0     0% 91.25%      7.95s 10.05%  internal/runtime/maps.newGroups (inline)
+         0     0% 91.25%         2s  2.53%  runtime.(*mheap).alloc
+         0     0% 91.25%      0.77s  0.97%  runtime.(*mheap).allocMSpanLocked
+         0     0% 91.25%      0.88s  1.11%  runtime.(*mspan).markBitsForIndex (inline)
+         0     0% 91.25%      0.62s  0.78%  runtime.gcAssistAlloc
+         0     0% 91.25%      0.62s  0.78%  runtime.gcAssistAlloc.func2
+         0     0% 91.25%      0.62s  0.78%  runtime.gcAssistAlloc1
+         0     0% 91.25%      8.41s 10.63%  runtime.gcBgMarkWorker
+         0     0% 91.25%      8.31s 10.50%  runtime.gcBgMarkWorker.func2
+         0     0% 91.25%      8.31s 10.50%  runtime.gcDrain
+         0     0% 91.25%      6.40s  8.09%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 91.25%      1.91s  2.41%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 91.25%      0.62s  0.78%  runtime.gcDrainN
+         0     0% 91.25%     67.90s 85.83%  siaod-hw1/internal/lsh3d.BenchmarkLSH3DQuery.func1
+         0     0% 91.25%     67.90s 85.83%  siaod-hw1/internal/lsh3d.runBatchBenchmark
+         0     0% 91.25%     67.90s 85.83%  testing.(*B).run1.func1
+         0     0% 91.25%     67.90s 85.83%  testing.(*B).runN

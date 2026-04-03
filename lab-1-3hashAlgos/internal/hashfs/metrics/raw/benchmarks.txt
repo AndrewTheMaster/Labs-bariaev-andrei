@@ -2,33 +2,33 @@ goos: linux
 goarch: amd64
 pkg: siaod-hw1/internal/hashfs
 cpu: AMD Eng Sample: 100-000000829-50_Y             
-BenchmarkStoreInsert/size=1000-16         	    1831	    768180 ns/op	        10.44 ci95_ns/item	       768.2 ns/item	   1301779 ops/s	   80006 B/op	    1000 allocs/op
-BenchmarkStoreInsert/size=5000-16         	     322	   3705856 ns/op	        11.82 ci95_ns/item	       741.2 ns/item	   1349216 ops/s	  400001 B/op	    5000 allocs/op
-BenchmarkStoreInsert/size=10000-16        	     146	   8213439 ns/op	        16.65 ci95_ns/item	       821.3 ns/item	   1217517 ops/s	  800001 B/op	   10000 allocs/op
-BenchmarkStoreInsert/size=50000-16        	      19	  58947869 ns/op	        22.00 ci95_ns/item	      1179 ns/item	    848207 ops/s	 4000005 B/op	   50000 allocs/op
-BenchmarkStoreInsert/size=100000-16       	       9	 129245498 ns/op	       167.3 ci95_ns/item	      1292 ns/item	    773721 ops/s	 8000000 B/op	  100000 allocs/op
-BenchmarkStoreInsert/size=500000-16       	       2	 678181336 ns/op	       239.2 ci95_ns/item	      1356 ns/item	    737266 ops/s	40002624 B/op	  500002 allocs/op
-BenchmarkStoreInsert/size=1000000-16      	       1	1418809162 ns/op	         0 ci95_ns/item	      1419 ns/item	    704816 ops/s	80000000 B/op	 1000000 allocs/op
-BenchmarkStoreUpdate/size=1000-16         	    1699	    731538 ns/op	         7.688 ci95_ns/item	       731.5 ns/item	   1366984 ops/s	   80000 B/op	    1000 allocs/op
-BenchmarkStoreUpdate/size=5000-16         	     286	   4318605 ns/op	        20.40 ci95_ns/item	       863.7 ns/item	   1157781 ops/s	  400000 B/op	    5000 allocs/op
-BenchmarkStoreUpdate/size=10000-16        	     163	   7394662 ns/op	        13.44 ci95_ns/item	       739.5 ns/item	   1352327 ops/s	  800001 B/op	   10000 allocs/op
-BenchmarkStoreUpdate/size=50000-16        	      18	  65633705 ns/op	        41.32 ci95_ns/item	      1313 ns/item	    761804 ops/s	 4000000 B/op	   50000 allocs/op
-BenchmarkStoreUpdate/size=100000-16       	       9	 121787244 ns/op	        17.61 ci95_ns/item	      1218 ns/item	    821104 ops/s	 8000010 B/op	  100000 allocs/op
-BenchmarkStoreUpdate/size=500000-16       	       2	 688259748 ns/op	        95.73 ci95_ns/item	      1377 ns/item	    726470 ops/s	40000000 B/op	  500000 allocs/op
-BenchmarkStoreUpdate/size=1000000-16      	       1	1296292466 ns/op	         0 ci95_ns/item	      1296 ns/item	    771431 ops/s	80000000 B/op	 1000000 allocs/op
-BenchmarkStoreDelete/size=1000-16         	    1741	    685784 ns/op	         4.981 ci95_ns/item	       685.8 ns/item	   1458186 ops/s	   48000 B/op	    1000 allocs/op
-BenchmarkStoreDelete/size=5000-16         	     342	   3511887 ns/op	        10.52 ci95_ns/item	       702.4 ns/item	   1423736 ops/s	  240000 B/op	    5000 allocs/op
-BenchmarkStoreDelete/size=10000-16        	     170	   7002413 ns/op	        13.24 ci95_ns/item	       700.2 ns/item	   1428079 ops/s	  480000 B/op	   10000 allocs/op
-BenchmarkStoreDelete/size=50000-16        	      20	  57575983 ns/op	        20.47 ci95_ns/item	      1152 ns/item	    868418 ops/s	 2400009 B/op	   50000 allocs/op
-BenchmarkStoreDelete/size=100000-16       	       9	 117252113 ns/op	        19.83 ci95_ns/item	      1173 ns/item	    852863 ops/s	 4800000 B/op	  100000 allocs/op
-BenchmarkStoreDelete/size=500000-16       	       2	 507985827 ns/op	       153.3 ci95_ns/item	      1016 ns/item	    984279 ops/s	24000000 B/op	  500000 allocs/op
-BenchmarkStoreDelete/size=1000000-16      	       2	1070607875 ns/op	       216.9 ci95_ns/item	      1071 ns/item	    934049 ops/s	48000000 B/op	 1000000 allocs/op
-BenchmarkStoreGet/size=1000-16            	     967	   1219206 ns/op	         8.970 ci95_ns/item	      1219 ns/item	    820206 ops/s	  112000 B/op	    3000 allocs/op
-BenchmarkStoreGet/size=5000-16            	     204	   6198262 ns/op	        41.49 ci95_ns/item	      1240 ns/item	    806678 ops/s	  561568 B/op	   15042 allocs/op
-BenchmarkStoreGet/size=10000-16           	      98	  12077544 ns/op	        22.61 ci95_ns/item	      1208 ns/item	    827983 ops/s	 1124928 B/op	   30132 allocs/op
-BenchmarkStoreGet/size=50000-16           	      15	  67352815 ns/op	        22.21 ci95_ns/item	      1347 ns/item	    742359 ops/s	 5728819 B/op	  153450 allocs/op
-BenchmarkStoreGet/size=100000-16          	       8	 140972246 ns/op	        19.50 ci95_ns/item	      1410 ns/item	    709359 ops/s	11732908 B/op	  314274 allocs/op
-BenchmarkStoreGet/size=500000-16          	       2	 869745934 ns/op	        12.79 ci95_ns/item	      1739 ns/item	    574881 ops/s	69405728 B/op	 1859082 allocs/op
-BenchmarkStoreGet/size=1000000-16         	       1	2075611501 ns/op	         0 ci95_ns/item	      2076 ns/item	    481786 ops/s	165356016 B/op	 4429179 allocs/op
+BenchmarkStoreInsert/size=1000-16         	      20	    706586 ns/op	        77.21 ci95_ns/item	       706.6 ns/item	   1415256 ops/s	   80000 B/op	    1000 allocs/op
+BenchmarkStoreInsert/size=5000-16         	      20	   3682082 ns/op	        74.30 ci95_ns/item	       736.4 ns/item	   1357927 ops/s	  400009 B/op	    5000 allocs/op
+BenchmarkStoreInsert/size=10000-16        	      20	   7675867 ns/op	        48.36 ci95_ns/item	       767.6 ns/item	   1302784 ops/s	  800268 B/op	   10000 allocs/op
+BenchmarkStoreInsert/size=50000-16        	      20	  71007232 ns/op	        46.19 ci95_ns/item	      1420 ns/item	    704154 ops/s	 4000012 B/op	   50000 allocs/op
+BenchmarkStoreInsert/size=100000-16       	      20	 115798218 ns/op	        13.35 ci95_ns/item	      1158 ns/item	    863571 ops/s	 8000000 B/op	  100000 allocs/op
+BenchmarkStoreInsert/size=500000-16       	      20	 604224097 ns/op	        41.06 ci95_ns/item	      1208 ns/item	    827508 ops/s	40000524 B/op	  500000 allocs/op
+BenchmarkStoreInsert/size=1000000-16      	      20	 917529042 ns/op	         6.368 ci95_ns/item	       917.5 ns/item	   1089884 ops/s	80000788 B/op	 1000000 allocs/op
+BenchmarkStoreUpdate/size=1000-16         	      20	    691810 ns/op	        77.37 ci95_ns/item	       691.8 ns/item	   1445484 ops/s	   80000 B/op	    1000 allocs/op
+BenchmarkStoreUpdate/size=5000-16         	      20	   3765832 ns/op	        34.23 ci95_ns/item	       753.2 ns/item	   1327728 ops/s	  400000 B/op	    5000 allocs/op
+BenchmarkStoreUpdate/size=10000-16        	      20	   6923936 ns/op	        21.37 ci95_ns/item	       692.4 ns/item	   1444265 ops/s	  800000 B/op	   10000 allocs/op
+BenchmarkStoreUpdate/size=50000-16        	      20	  42119341 ns/op	        14.14 ci95_ns/item	       842.4 ns/item	   1187103 ops/s	 4000004 B/op	   50000 allocs/op
+BenchmarkStoreUpdate/size=100000-16       	      20	  87611852 ns/op	        10.75 ci95_ns/item	       876.1 ns/item	   1141398 ops/s	 8000000 B/op	  100000 allocs/op
+BenchmarkStoreUpdate/size=500000-16       	      20	 457459251 ns/op	         9.746 ci95_ns/item	       914.9 ns/item	   1092994 ops/s	40000000 B/op	  500000 allocs/op
+BenchmarkStoreUpdate/size=1000000-16      	      20	 938367778 ns/op	        21.63 ci95_ns/item	       938.4 ns/item	   1065680 ops/s	80000264 B/op	 1000000 allocs/op
+BenchmarkStoreDelete/size=1000-16         	      20	    662721 ns/op	         5.416 ci95_ns/item	       662.7 ns/item	   1508930 ops/s	   48000 B/op	    1000 allocs/op
+BenchmarkStoreDelete/size=5000-16         	      20	   3571510 ns/op	        21.86 ci95_ns/item	       714.3 ns/item	   1399968 ops/s	  240000 B/op	    5000 allocs/op
+BenchmarkStoreDelete/size=10000-16        	      20	   6785796 ns/op	        22.60 ci95_ns/item	       678.6 ns/item	   1473666 ops/s	  480000 B/op	   10000 allocs/op
+BenchmarkStoreDelete/size=50000-16        	      20	  42907538 ns/op	        28.65 ci95_ns/item	       858.2 ns/item	   1165296 ops/s	 2400000 B/op	   50000 allocs/op
+BenchmarkStoreDelete/size=100000-16       	      20	  88282314 ns/op	        18.95 ci95_ns/item	       882.8 ns/item	   1132730 ops/s	 4800000 B/op	  100000 allocs/op
+BenchmarkStoreDelete/size=500000-16       	      20	 470867696 ns/op	        39.96 ci95_ns/item	       941.7 ns/item	   1061869 ops/s	24000000 B/op	  500000 allocs/op
+BenchmarkStoreDelete/size=1000000-16      	      20	 941944750 ns/op	        36.06 ci95_ns/item	       941.9 ns/item	   1061633 ops/s	48000000 B/op	 1000000 allocs/op
+BenchmarkStoreGet/size=1000-16            	      20	   1192958 ns/op	        72.06 ci95_ns/item	      1193 ns/item	    838252 ops/s	  112000 B/op	    3000 allocs/op
+BenchmarkStoreGet/size=5000-16            	      20	   6122564 ns/op	        38.95 ci95_ns/item	      1225 ns/item	    816651 ops/s	  561568 B/op	   15042 allocs/op
+BenchmarkStoreGet/size=10000-16           	      20	  11829112 ns/op	        27.73 ci95_ns/item	      1183 ns/item	    845372 ops/s	 1124928 B/op	   30132 allocs/op
+BenchmarkStoreGet/size=50000-16           	      20	  67515377 ns/op	        40.55 ci95_ns/item	      1350 ns/item	    740572 ops/s	 5728814 B/op	  153450 allocs/op
+BenchmarkStoreGet/size=100000-16          	      20	 136932840 ns/op	        12.51 ci95_ns/item	      1369 ns/item	    730285 ops/s	11732896 B/op	  314274 allocs/op
+BenchmarkStoreGet/size=500000-16          	      20	 858560497 ns/op	        54.81 ci95_ns/item	      1717 ns/item	    582370 ops/s	69405737 B/op	 1859082 allocs/op
+BenchmarkStoreGet/size=1000000-16         	      20	2063154047 ns/op	        31.15 ci95_ns/item	      2063 ns/item	    484695 ops/s	165356016 B/op	 4429179 allocs/op
 PASS
-ok  	siaod-hw1/internal/hashfs	71.948s
+ok  	siaod-hw1/internal/hashfs	261.956s

@@ -1,34 +1,35 @@
 File: perfecthash.test
-Build ID: b957437ffadc94bb1f41466a15c7958e26d6eacf
+Build ID: 4ee62047e165d2a14fba03cda27bb6761a1392bf
 Type: alloc_space
-Time: 2026-03-28 19:01:18 MSK
-Showing nodes accounting for 119.23MB, 99.17% of 120.23MB total
-Dropped 16 nodes (cum <= 0.60MB)
+Time: 2026-04-03 17:42:28 MSK
+Showing nodes accounting for 108.51MB, 99.09% of 109.51MB total
+Dropped 14 nodes (cum <= 0.55MB)
       flat  flat%   sum%        cum   cum%
-   65.56MB 54.53% 54.53%    65.56MB 54.53%  siaod-hw1/internal/perfecthash.makeDataset
-   45.48MB 37.83% 92.36%    45.48MB 37.83%  siaod-hw1/internal/perfecthash.(*Builder).Build (inline)
-    5.51MB  4.58% 96.94%     5.51MB  4.58%  runtime.allocm
-    1.16MB  0.96% 97.91%     1.16MB  0.96%  runtime/pprof.StartCPUProfile
-    0.88MB  0.73% 98.64%     1.52MB  1.26%  compress/flate.NewWriter (inline)
-    0.64MB  0.53% 99.17%     0.64MB  0.53%  compress/flate.(*compressor).init
-         0     0% 99.17%     1.52MB  1.26%  compress/gzip.(*Writer).Write
-         0     0% 99.17%     1.66MB  1.38%  main.main
-         0     0% 99.17%     1.66MB  1.38%  runtime.main
-         0     0% 99.17%     1.50MB  1.25%  runtime.mcall
-         0     0% 99.17%     4.01MB  3.33%  runtime.mstart
-         0     0% 99.17%     4.01MB  3.33%  runtime.mstart0
-         0     0% 99.17%     4.01MB  3.33%  runtime.mstart1
-         0     0% 99.17%     5.51MB  4.58%  runtime.newm
-         0     0% 99.17%     1.50MB  1.25%  runtime.park_m
-         0     0% 99.17%     5.51MB  4.58%  runtime.resetspinning
-         0     0% 99.17%     5.51MB  4.58%  runtime.schedule
-         0     0% 99.17%     5.51MB  4.58%  runtime.startm
-         0     0% 99.17%     5.51MB  4.58%  runtime.wakep
-         0     0% 99.17%     1.52MB  1.26%  runtime/pprof.(*profileBuilder).build
-         0     0% 99.17%     2.02MB  1.68%  runtime/pprof.profileWriter
-         0     0% 99.17%   111.04MB 92.36%  siaod-hw1/internal/perfecthash.BenchmarkPerfectHashLookup.func1
-         0     0% 99.17%   111.04MB 92.36%  testing.(*B).run1.func1
-         0     0% 99.17%   111.54MB 92.78%  testing.(*B).runN
-         0     0% 99.17%     1.66MB  1.38%  testing.(*M).Run
-         0     0% 99.17%     1.16MB  0.96%  testing.(*M).before
-         0     0% 99.17%     1.16MB  0.96%  testing/internal/testdeps.TestDeps.StartCPUProfile
+   59.95MB 54.75% 54.75%    59.95MB 54.75%  siaod-hw1/internal/perfecthash.makeDataset
+   40.30MB 36.80% 91.55%    40.30MB 36.80%  siaod-hw1/internal/perfecthash.(*Builder).Build (inline)
+    5.01MB  4.57% 96.13%     5.01MB  4.57%  runtime.allocm
+    1.16MB  1.06% 97.18%     1.16MB  1.06%  runtime/pprof.StartCPUProfile
+    0.88MB   0.8% 97.99%     2.09MB  1.91%  compress/flate.NewWriter (inline)
+    0.64MB  0.58% 98.57%     1.20MB  1.10%  compress/flate.(*compressor).init
+    0.57MB  0.52% 99.09%     0.57MB  0.52%  compress/flate.newDeflateFast (inline)
+         0     0% 99.09%     2.09MB  1.91%  compress/gzip.(*Writer).Write
+         0     0% 99.09%     1.16MB  1.06%  main.main
+         0     0% 99.09%     1.16MB  1.06%  runtime.main
+         0     0% 99.09%        2MB  1.83%  runtime.mcall
+         0     0% 99.09%     3.01MB  2.74%  runtime.mstart
+         0     0% 99.09%     3.01MB  2.74%  runtime.mstart0
+         0     0% 99.09%     3.01MB  2.74%  runtime.mstart1
+         0     0% 99.09%     5.01MB  4.57%  runtime.newm
+         0     0% 99.09%        2MB  1.83%  runtime.park_m
+         0     0% 99.09%     5.01MB  4.57%  runtime.resetspinning
+         0     0% 99.09%     5.01MB  4.57%  runtime.schedule
+         0     0% 99.09%     5.01MB  4.57%  runtime.startm
+         0     0% 99.09%     5.01MB  4.57%  runtime.wakep
+         0     0% 99.09%     2.09MB  1.91%  runtime/pprof.(*profileBuilder).build
+         0     0% 99.09%     2.09MB  1.91%  runtime/pprof.profileWriter
+         0     0% 99.09%   100.25MB 91.55%  siaod-hw1/internal/perfecthash.BenchmarkPerfectHashLookup.func1
+         0     0% 99.09%   100.25MB 91.55%  testing.(*B).run1.func1
+         0     0% 99.09%   100.25MB 91.55%  testing.(*B).runN
+         0     0% 99.09%     1.16MB  1.06%  testing.(*M).Run
+         0     0% 99.09%     1.16MB  1.06%  testing.(*M).before
+         0     0% 99.09%     1.16MB  1.06%  testing/internal/testdeps.TestDeps.StartCPUProfile

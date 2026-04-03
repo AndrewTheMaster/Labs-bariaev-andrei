@@ -1,29 +1,18 @@
 File: hashfs.test
-Build ID: 6e1a6eb78262a530bf33065cba5ed0ae517361b8
+Build ID: 3584829187721856b414e5c2c5ff9773b990f210
 Type: alloc_space
-Time: 2026-03-28 19:01:03 MSK
-Showing nodes accounting for 331.88MB, 98.90% of 335.56MB total
-Dropped 19 nodes (cum <= 1.68MB)
+Time: 2026-04-03 17:41:28 MSK
+Showing nodes accounting for 460.86MB, 98.92% of 465.90MB total
+Dropped 34 nodes (cum <= 2.33MB)
       flat  flat%   sum%        cum   cum%
-  163.51MB 48.73% 48.73%   163.51MB 48.73%  siaod-hw1/internal/hashfs.(*store).readRecord
-  119.01MB 35.47% 84.19%   119.01MB 35.47%  siaod-hw1/internal/hashfs.(*store).appendRecord
-   33.92MB 10.11% 94.30%    33.92MB 10.11%  siaod-hw1/internal/hashfs.shuffleKeys
-    8.44MB  2.52% 96.82%    12.94MB  3.86%  siaod-hw1/internal/hashfs.makeDataset
-    4.50MB  1.34% 98.16%     4.50MB  1.34%  fmt.Sprintf
-       2MB   0.6% 98.75%        2MB   0.6%  runtime.allocm
-    0.50MB  0.15% 98.90%     2.02MB   0.6%  runtime/pprof.(*profileBuilder).emitLocation
-         0     0% 98.90%        2MB   0.6%  runtime.newm
-         0     0% 98.90%        2MB   0.6%  runtime.resetspinning
-         0     0% 98.90%        2MB   0.6%  runtime.schedule
-         0     0% 98.90%        2MB   0.6%  runtime.startm
-         0     0% 98.90%        2MB   0.6%  runtime.wakep
-         0     0% 98.90%     2.02MB   0.6%  runtime/pprof.(*profileBuilder).appendLocsForStack
-         0     0% 98.90%     2.52MB  0.75%  runtime/pprof.(*profileBuilder).build
-         0     0% 98.90%     3.02MB   0.9%  runtime/pprof.profileWriter
-         0     0% 98.90%   163.51MB 48.73%  siaod-hw1/internal/hashfs.(*store).Get
-         0     0% 98.90%   119.01MB 35.47%  siaod-hw1/internal/hashfs.(*store).Put
-         0     0% 98.90%   329.37MB 98.16%  siaod-hw1/internal/hashfs.BenchmarkStoreGet.func1
-         0     0% 98.90%   316.44MB 94.30%  siaod-hw1/internal/hashfs.BenchmarkStoreGet.func1.2
-         0     0% 98.90%   316.44MB 94.30%  siaod-hw1/internal/hashfs.runBatchBenchmark
-         0     0% 98.90%   329.37MB 98.16%  testing.(*B).run1.func1
-         0     0% 98.90%   329.37MB 98.16%  testing.(*B).runN
+  239.51MB 51.41% 51.41%   239.51MB 51.41%  siaod-hw1/internal/hashfs.(*store).readRecord
+  161.51MB 34.67% 86.08%   161.51MB 34.67%  siaod-hw1/internal/hashfs.(*store).appendRecord
+   51.89MB 11.14% 97.21%    51.89MB 11.14%  siaod-hw1/internal/hashfs.shuffleKeys
+    7.94MB  1.70% 98.92%     8.94MB  1.92%  siaod-hw1/internal/hashfs.makeDataset
+         0     0% 98.92%   239.51MB 51.41%  siaod-hw1/internal/hashfs.(*store).Get
+         0     0% 98.92%   161.51MB 34.67%  siaod-hw1/internal/hashfs.(*store).Put
+         0     0% 98.92%   461.86MB 99.13%  siaod-hw1/internal/hashfs.BenchmarkStoreGet.func1
+         0     0% 98.92%   452.92MB 97.21%  siaod-hw1/internal/hashfs.BenchmarkStoreGet.func1.2
+         0     0% 98.92%   452.92MB 97.21%  siaod-hw1/internal/hashfs.runBatchBenchmark
+         0     0% 98.92%   461.86MB 99.13%  testing.(*B).run1.func1
+         0     0% 98.92%   461.86MB 99.13%  testing.(*B).runN
