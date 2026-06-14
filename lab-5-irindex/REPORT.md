@@ -77,6 +77,17 @@ hits=6854  time=...
 
 Запросы: `NOT(...)`, скобки, кириллица. **Пересоберите индекс** после обновления формата: `go run ./cmd/irindex …`.
 
+### Отладка документов (`irquery -doc`, `irbrowse`)
+
+В `.irx` нет полного текста — только заголовки. Для проверки **ADJ/NEAR** нужен исходный wiki XML:
+
+```bash
+./bin/irquery -index data/index.irx -wiki-xml ../ruwiki-latest-pages-articles.xml -doc 42
+make browse WIKI_XML=../ruwiki-latest-pages-articles.xml   # http://127.0.0.1:8088
+```
+
+Web UI **`irbrowse`**: поиск → клик по docID → excerpt + **токены с позициями** + подсказка по `ADJ(история, россии)`.
+
 ---
 
 ## 3. Методика бенчмарков
@@ -151,6 +162,23 @@ make collect-compression WIKI_XML=../ruwiki-latest-pages-articles.xml
 - **V1** — varint по всем потокам (baseline).
 
 На ruwiki **V4 < V2** (−4.8% posting payload): optimal tf/pos экономит на малых Δ; PForDelta на doc Δ остаётся по ТЗ. Полный `.irx` — **табл. 4.1б**.
+
+### 4.1г Когда **varint** сильно лучше **PForDelta** (только doc Δ)
+
+PForDelta выгоден на **длинных** posting lists (много doc Δ в блоке). На **коротких** списках фиксированный overhead блока (заголовок + exceptions) перевешивает выигрыш: один docID кодируется varint за **1 B**, а PForDelta — минимум **8 B** на блок.
+
+**Агрегат по ruwiki N=20 000** (`AnalyzeDocCodecBreakdown`, только doc Δ): bitpack/varint компактнее PForDelta на **~1,63 млн** термов, PForDelta выигрывает на **~21 тыс.**; суммарно doc Δ: PForDelta **32 341 КБ** vs bitpack **25 096 КБ** (−22%).
+
+**Конкретные posting lists** (`make codec-examples` → [`metrics/raw/codec_examples.tsv`](metrics/raw/codec_examples.tsv)):
+
+| корпус | терм | df | varint doc Δ | PForDelta doc Δ | P4/varint |
+|:-------|:-----|---:|-------------:|----------------:|----------:|
+| ruwiki | `добившуюся` | 1 | **1 B** | 8 B | **8.0×** |
+| ruwiki | `аймсбюттель` | 1 | **1 B** | 8 B | **8.0×** |
+| ruwiki | `20180108014336` | 1 | **1 B** | 8 B | **8.0×** |
+| synthetic | `демо2` | 1 | **1 B** | 8 B | **8.0×** |
+
+**Вывод для отчёта:** на редких термах (df=1, типично для wiki) varint/bitpack на doc Δ в разы компактнее PForDelta; поэтому в **V4** PForDelta оставлен по ТЗ на doc Δ, а на tf/pos — **optimal varint|bitpack**; суммарно V4 обходит «чистый» P4+bitpack (V3).
 
 ### 4.1б Ruwiki — построение (**N = 20 000**, IRIXV3PD)
 

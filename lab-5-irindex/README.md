@@ -23,7 +23,7 @@ export WIKI_XML=../ruwiki-latest-pages-articles.xml
 ## Сборка
 
 ```bash
-make build   # bin/irindex, bin/irquery
+make build   # bin/irindex, bin/irquery, bin/irbrowse
 ```
 
 ## Индекс с вики
@@ -49,6 +49,36 @@ make build-index WIKI_XML=../ruwiki-latest-pages-articles.xml
 ```
 
 Вывод: **docID**, **заголовок**, **terms×tf**. **MSM(...)** только in-memory (в `.irx` нет текстов).
+
+### Просмотр текста документа (отладка ADJ/NEAR)
+
+В `.irx` хранятся заголовки, не полный wiki-текст. Для проверки ADJ нужен исходный XML:
+
+```bash
+# CLI: docID + токены с позициями
+./bin/irquery -index data/index.irx \
+  -wiki-xml ../ruwiki-latest-pages-articles.xml \
+  -doc 42
+
+# REPL
+./bin/irquery -index data/index.irx -wiki-xml ../ruwiki-latest-pages-articles.xml
+> :doc 42
+
+# Web UI (поиск + клик по docID → токены и excerpt)
+make browse WIKI_XML=../ruwiki-latest-pages-articles.xml
+# → http://127.0.0.1:8088
+```
+
+Примеры запросов в UI: `история AND россии`, `NOT ADJ(история, россии)`.
+
+Готовых лёгких UI под произвольный `.irx` нет (Luke — для Lucene); **`irbrowse`** — минимальный локальный просмотрщик под наш формат.
+
+### Примеры varint vs PForDelta
+
+```bash
+make codec-examples WIKI_XML=../ruwiki-latest-pages-articles.xml
+# metrics/raw/codec_examples.tsv — термы, где doc Δ varint в 1.5×+ компактнее P4
+```
 
 ## Тесты и метрики
 
@@ -141,7 +171,8 @@ make profile
 | `internal/ir/encode_stream.go` | bitpack / optimal varint|bitpack (tf/pos) |
 | `internal/ir/storage.go` | `SaveCompressed`, `OpenMMapIndex`, `IRIXV3PD` |
 | `cmd/irindex` | построение `.irx` |
-| `cmd/irquery` | REPL / `-q` по mmap |
+| `cmd/irquery` | REPL / `-q` / `-doc` по mmap |
+| `cmd/irbrowse` | Web UI: поиск + просмотр wiki-текста по docID |
 | `plot_metrics.gnuplot` | gnuplot-скрипт |
 | `REPORT.md` | отчёт |
 | `metrics/raw/` | csv, tsv, pprof |

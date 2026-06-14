@@ -7,11 +7,20 @@ PLOT_DIR     := $(METRICS_OUT)/plots
 PROF_DIR     := $(METRICS_OUT)/profiles
 WIKI_XML     ?= ../ruwiki-latest-pages-articles.xml
 
-.PHONY: test bench collect collect-wiki collect-compression metrics plot profile build-index build query clean
+.PHONY: test bench collect collect-wiki collect-compression codec-examples metrics plot profile build-index build query browse clean
 
 build:
 	go build -o bin/irindex ./cmd/irindex
 	go build -o bin/irquery ./cmd/irquery
+	go build -o bin/irbrowse ./cmd/irbrowse
+
+codec-examples:
+	mkdir -p $(RAW_DIR)
+	WIKI_XML='$(WIKI_XML)' CORPUS_XML='$(WIKI_XML)' go run ./scripts/print_codec_examples.go $(RAW_DIR)/codec_examples.tsv
+
+browse:
+	@test -f data/index.irx || $(MAKE) build-index
+	./bin/irbrowse -index data/index.irx -wiki-xml '$(WIKI_XML)'
 
 query:
 	@test -f data/index.irx || $(MAKE) build-index
